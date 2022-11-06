@@ -1,0 +1,15 @@
+.PhoneInputCountry {
+  background: #f9fbfc !important;
+  padding: 12px;
+  margin-right: 0px;
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+}
+.pack_custom_input input {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+.pack_custom_input:focus {
+  border: 1px solid #3f8cfe !important;
+  box-shadow: none !important;
+}

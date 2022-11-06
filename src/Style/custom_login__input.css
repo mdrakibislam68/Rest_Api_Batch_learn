@@ -1,0 +1,253 @@
+.custom_input .ant-form-item-row {
+  display: block;
+}
+.custom_input .ant-form-item-required::before {
+  visibility: hidden;
+  margin-right: 0px;
+}
+.custom_input .ant-input-prefix {
+  margin-left: 10px !important;
+}
+.custom_input__password .ant-input-prefix {
+  margin-left: 10px !important;
+}
+.custom_input input {
+  height: 44px !important;
+  padding: 0px 10px !important;
+  position: relative;
+  background-color: #f9fbfc !important;
+  border: none !important;
+  border-radius: 10px !important;
+  width: 100% !important;
+  color: #042040 !important;
+  font-weight: 400 !important;
+  font-size: 15px !important;
+  line-height: 20px !important;
+}
+/*.custom_input:focus{*/
+/*    border: 1px solid #3F8CFE!important;*/
+/*    box-shadow: none !important;*/
+/*}*/
+
+.custom_input__password input {
+  border: 1px solid transparent !important;
+  padding: 0px 10px !important;
+  letter-spacing: 3px !important;
+  color: #364a61 !important;
+}
+custom_input__phone input {
+  padding: 0px 42px !important;
+}
+.custom_input__password input::placeholder {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: 3px !important;
+  color: #9291a9 !important;
+}
+.custom_input input[type="password"] {
+  background-color: #f9fbfc !important;
+}
+.custom_input .ant-input-affix-wrapper {
+  background: #f9fbfc;
+  border: 1px solid #f2f3f7 !important;
+  border-radius: 10px !important;
+  padding: 0px 10px;
+  height: 46px !important;
+}
+.custom_input .ant-input-affix-wrapper:focus {
+  border: 1px solid #3f8cfe !important;
+  box-shadow: none !important;
+}
+.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  background: #f9fbfc !important;
+}
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+  z-index: 0;
+}
+.ant-col-offset-8 {
+  margin-left: 0px !important;
+}
+
+element.style {
+}
+.ant-form-horizontal .ant-form-item-control {
+  flex: 1 1;
+  min-width: 0;
+}
+.ant-col-offset-8 {
+  margin-left: 0px;
+}
+.ant-col-offset-8 {
+  /* margin-left: 33.33333333%; */
+}
+.ant-col-16 {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+button.ant-btn.ant-btn-primary.w-full.login-form-button {
+  padding: 1rem 0px;
+  height: auto;
+  border-radius: 0.625rem;
+  border-color: #1890ff;
+  font-size: 1rem;
+  line-height: 1.364rem;
+  font-weight: 700;
+}
+.ant-btn-primary:focus,
+.ant-btn-primary:hover {
+  color: #fff;
+  background: #136df1 !important;
+}
+.prev__disable {
+  color: black !important;
+  background: white !important;
+  border: 1px solid #3f8cfe !important;
+}
+.prev__disable:hover {
+  background: none !important;
+}
+
+.custom_input .ant-form-item-label {
+  text-align: left;
+}
+.custom_input .ant-col-16 {
+  max-width: 100%;
+}
+.custom_input label.ant-form-item-required {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 22px !important;
+  color: #042040 !important;
+}
+. element.style {
+}
+.ant-form-horizontal .ant-form-item-control {
+  flex: 1 1;
+  min-width: 0;
+}
+.ant-col-offset-8 {
+  margin-left: 0px;
+}
+.ant-col-offset-8 {
+  /* margin-left: 33.33333333%; */
+}
+
+.ant-form-item-explain-error {
+  color: red;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: left;
+}
+.required__checkbox .ant-form-item-explain-error {
+  text-align: center !important;
+  margin-bottom: 20px !important;
+}
+.required__checkbox .ant-checkbox-wrapper {
+  margin-bottom: 0px !important;
+}
+input#basic_password {
+  font-size: 16px;
+  letter-spacing: 3px;
+  font-weight: 600;
+}
+.ant-col.ant-col-8.ant-form-item-label {
+  margin-bottom: 12px;
+}
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  height: 44px !important;
+  padding: 0px 16px !important;
+  position: relative;
+  background-color: #f9fbfc !important;
+  border: 1px solid #f2f3f7 !important;
+  border-radius: 10px !important;
+  width: 100% !important;
+  color: #042040 !important;
+  font-weight: 400 !important;
+  font-size: 15px !important;
+  line-height: 20px !important;
+}
+.custom_Occupation
+  .ant-select-single
+  .ant-select-selector
+  .ant-select-selection-item,
+.ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+  line-height: 40px !important;
+}
+.custom_input__phone
+  .ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  padding: 13px 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-top-left-radius: 10px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+.custom_input__phone .ant-input-group .ant-input {
+  padding: 0px 10px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-left: none !important;
+  border: 1px solid #f2f3f7 !important;
+}
+.custom_input__phone .span.ant-input-group-addon {
+  border: none !important;
+}
+.custom_input__phone .ant-input-group-addon {
+  border: none !important;
+  background: none !important;
+}
+.ant-select-single .ant-select-selector .ant-select-selection-item,
+.ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+  line-height: 18px !important;
+  text-align: left;
+}
+.account__button {
+  padding: 14px 0px;
+  height: auto;
+  width: 100%;
+  max-width: 300px;
+  background-color: rgb(63 140 254);
+  border-radius: 0.625rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.next__button {
+  padding: 14px 50px;
+  height: auto;
+  background-color: rgb(63 140 254);
+  border-radius: 0.625rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.custom_modal__input input {
+  border: 1px solid #f2f3f7 !important;
+}
+.custom_input__textarea textarea#description {
+  height: 120px !important;
+  border: 1px solid #f2f3f7 !important;
+  border-radius: 10px !important;
+  padding: 14px 16px !important;
+  background: #f9fbfc !important;
+}
+.custom_datepicker .ant-row.ant-form-item-row {
+  display: block !important;
+}
+.custom_datepicker .ant-picker {
+  height: 44px !important;
+  width: 100% !important;
+  background: #f9fbfc !important;
+  border-radius: 10px !important;
+  border: 1px solid #f2f3f7 !important;
+}
+.custom_datepicker > label {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 22px !important;
+}
+.save-button {
+  padding: 12px 40px !important;
+}
+.custom-save__btn {
+  margin-bottom: 0px !important;
+}

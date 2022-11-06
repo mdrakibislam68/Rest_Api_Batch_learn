@@ -1,0 +1,35 @@
+.ant-modal-footer,
+.ant-modal-header {
+  border-top: 1px solid #fff !important;
+  border-bottom: 1px solid #fff !important;
+}
+span.anticon.anticon-close.ant-modal-close-icon {
+  padding: 10px;
+  background: #f6f8fa;
+  border-radius: 50%;
+}
+span.anticon.anticon-close.ant-modal-close-icon:hover {
+  background: #3f8cfe;
+  color: white;
+}
+.custom_modal .ant-modal-content {
+  padding: 26px 30px 35px;
+  box-shadow: 0 30px 60px rgba(0, 62, 92, 0.04) !important;
+  border-radius: 15px !important;
+}
+.ant-modal-close {
+  top: 13px !important;
+  right: 22px !important;
+}
+.ant-modal-body {
+  padding: 0px !important;
+}
+.ant-modal-header {
+  padding: 0px !important;
+}
+.link-hover {
+  border: 2px solid transparent;
+}
+.link-hover:hover {
+  border: 2px solid #3f8cfe;
+}
