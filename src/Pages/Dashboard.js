@@ -20,7 +20,7 @@ const Dashboard = () => {
   const [classroom, setClassroom] = useState([]);
   // const [selectDate, setSelectDate] = useState("");
   const userInfoData = useSelector((state) => state.studentData.studentData);
-  console.log(userInfoData);
+  // console.log(userInfoData);
 
   useEffect(() => {
     dispatch(studentDataSlice({ baseurl }));

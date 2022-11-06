@@ -68,10 +68,39 @@ const LoadingModal = ({ openModal, setOpenModal, selectDate }) => {
         onCancel={handleCancel}
       >
         <div className="py-6 px-9">
-          <h1 className="text-2xl font-extrabold text-[#042040] mb-7 font-['Nunito_Sans']">
+          <h1 className="text-2xl font-extrabold text-[#042040]  font-['Nunito_Sans']">
             {" "}
             Request new session
           </h1>
+          {/* <span className="flex items-center mb-7 justify-between">
+            <span
+              onClick={() => setOpenModal(false)}
+              className="flex items-center justify-center hover:bg-[#3f8cfe] w-[36px] h-[36px] rounded-full bg-[#f6f8fa]"
+            >
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.7966 1.00366L1.00391 8.79635"
+                  stroke="#042040"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+                <path
+                  d="M8.79919 8.80082L1 1"
+                  stroke="#042040"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+            </span>
+          </span> */}
           <>
             <Steps current={current}>
               <Step key={current} />

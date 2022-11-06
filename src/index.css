@@ -26,5 +26,5 @@
 .ant-modal-close-x {
   width: 36px !important;
   height: 36px !important;
-  display: none !important;
+  /* display: none !important; */
 }

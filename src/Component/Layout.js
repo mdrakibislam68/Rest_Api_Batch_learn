@@ -8,14 +8,14 @@ import Sidemenu from "./Nav/Sidemenu";
 const Layout = () => {
   const { baseurl } = GlobalProvider();
 
-  useEffect(() => {
-    baseurl
-      .get("auth/profile_info/")
-      .then((res) => console.log(res.data))
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   baseurl
+  //     .get("auth/profile_info/")
+  //     .then((res) => console.log(res.data))
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   return (
     <>

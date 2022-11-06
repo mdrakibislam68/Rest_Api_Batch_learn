@@ -12,7 +12,7 @@ export const studentDataSlice = createAsyncThunk(
     try {
       const response = await baseurl.get("auth/profile_info/");
       if (response.data) {
-        console.log(response.data);
+        // console.log(response.data);
 
         return response.data;
       }
