@@ -1,0 +1,14 @@
+.custom_svg svg {
+  width: 70px;
+  height: 70px;
+  fill: #fff;
+  display: block;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+.ant-modal-content {
+  padding: 26px 30px 35px !important;
+}
+.button {
+  width: 100% !important;
+}

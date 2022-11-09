@@ -28,7 +28,7 @@ export const studentInfoData = createSlice({
   reducers: {},
 
   extraReducers: {
-    [studentDataSlice.pending]: (state, action) => {
+    [studentDataSlice.pending]: (state) => {
       state.isLoading = true;
     },
     [studentDataSlice.fulfilled]: (state, action) => {

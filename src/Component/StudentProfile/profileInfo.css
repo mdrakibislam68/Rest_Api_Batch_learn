@@ -1,0 +1,56 @@
+.ant-form-item label::before {
+  display: none;
+}
+.ant-form-item-label
+  > label.ant-form-item-required:not(.ant-form-item-required-mark-optional):before {
+  display: none;
+}
+.ant-row {
+  display: flex;
+  flex-direction: column;
+}
+.ant-form-item-label {
+  text-align: left;
+}
+.ant-select-single.ant-select-show-arrow .ant-select-selection-item,
+.ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+  padding-right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ant-input-group > .ant-input:last-child {
+  padding: 13px;
+}
+.ant-input {
+  height: 46px;
+  padding: 13px 16px;
+  position: relative;
+  background-color: #f9fbfc;
+  border: 1px solid #f2f3f7;
+  border-radius: 10px;
+  width: 100%;
+  color: #042040;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+}
+.ant-form-item-label label {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px !important;
+  color: #042040;
+}
+.ant-select-selection-item {
+  /* margin-top: 5px; */
+  /* margin-left: 2px; */
+  padding: 0;
+}
+.button {
+  width: 124px !important;
+  font-family: inherit !important;
+}
+.ant-input[disabled] {
+  background-color: #f9fbfc !important;
+  color: #042040 !important;
+}

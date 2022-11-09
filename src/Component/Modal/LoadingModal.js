@@ -6,14 +6,19 @@ import SecondStep from "../createclass/SecondStep";
 import ThirdStep from "../createclass/ThirdStep";
 import moment from "moment";
 import GlobalProvider from "../../Context/Index";
+import { useDispatch, useSelector } from "react-redux";
+import { changeModalAction } from "../../redux/classModal";
 
 const { Step } = Steps;
 
-const LoadingModal = ({ openModal, setOpenModal, selectDate }) => {
+const LoadingModal = ({ setOpenModal, selectDate }) => {
   const [firstValues, setFirstValues] = useState("");
   const [secondValues, setSecondValues] = useState(null);
   const { baseurl } = GlobalProvider();
+  const dispatch = useDispatch();
+
   const [student, setStudent] = useState("");
+  const openModal = useSelector((state) => state.openModal.value);
 
   useEffect(() => {
     baseurl
@@ -54,7 +59,7 @@ const LoadingModal = ({ openModal, setOpenModal, selectDate }) => {
       });
   };
   const handleCancel = () => {
-    setOpenModal(false);
+    dispatch(changeModalAction(false));
   };
 
   const [current, setCurrent] = useState(0);
@@ -62,16 +67,18 @@ const LoadingModal = ({ openModal, setOpenModal, selectDate }) => {
   return (
     <>
       <Modal
+        title={
+          <h1 className="text-2xl font-extrabold text-[#042040] mb-3 pt-3 font-['Nunito_Sans']">
+            {" "}
+            Request new session
+          </h1>
+        }
         className="w-[506px] "
         footer={null}
         open={openModal}
         onCancel={handleCancel}
       >
         <div className="py-6 px-9">
-          <h1 className="text-2xl font-extrabold text-[#042040]  font-['Nunito_Sans']">
-            {" "}
-            Request new session
-          </h1>
           {/* <span className="flex items-center mb-7 justify-between">
             <span
               onClick={() => setOpenModal(false)}

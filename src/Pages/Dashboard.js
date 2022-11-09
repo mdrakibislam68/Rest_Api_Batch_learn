@@ -9,6 +9,7 @@ import GlobalProvider from "../Context/Index";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { studentDataSlice } from "../redux/profileInfo";
+import { changeModalAction } from "../redux/classModal";
 
 const Dashboard = () => {
   // const studentData = useSelector((state) => state.addSubjectFilterData.value);
@@ -19,12 +20,6 @@ const Dashboard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [classroom, setClassroom] = useState([]);
   // const [selectDate, setSelectDate] = useState("");
-  const userInfoData = useSelector((state) => state.studentData.studentData);
-  // console.log(userInfoData);
-
-  useEffect(() => {
-    dispatch(studentDataSlice({ baseurl }));
-  }, []);
 
   useEffect(() => {
     baseurl
@@ -141,7 +136,8 @@ const Dashboard = () => {
     <div className="text-black pt-24 pl-24 pr-8 overflow-x-visible">
       <FullCalendar
         dateClick={(e) => {
-          setOpenModal(true);
+          dispatch(changeModalAction(true));
+          // setOpenModal(true);
           // setSelectDate(e.date);
         }}
         plugins={[dayGridPlugin, interactionPlugin, timeGrid]}
