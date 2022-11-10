@@ -12,6 +12,7 @@ import ThirdStep from "../createclass/ThirdStep";
 import { useDispatch } from "react-redux";
 import { changeModalAction } from "../../redux/classModal";
 import "./nav.css";
+import LoadingModal from "../Modal/LoadingModal";
 const { Step } = Steps;
 
 const Nav = () => {
@@ -19,6 +20,7 @@ const Nav = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  // const [openModal, setOpenModal] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -353,6 +355,7 @@ const Nav = () => {
           </span>
         </span>
       </div>
+      <LoadingModal setOpenModal={setOpenModal} openModal={openModal} />
     </nav>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Input, Select } from "antd";
 import { Option } from "antd/lib/mentions";
 import "./profileInfo.css";
+import PhoneInput from "react-phone-number-input";
 
 const PersonalInformation = ({ user, onFinish }) => {
   const email = user.email;
@@ -9,17 +10,21 @@ const PersonalInformation = ({ user, onFinish }) => {
   const lastname = user.last_name;
   const phone = user.phone_number;
 
+  const [phoneValue, setPhoneValue] = useState("");
+  console.log(phoneValue);
+  console.log(typeof phone);
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
-      <Select
+      {/* <Select
+        value="85"
         className="flex items-center"
         style={{
           width: "70px",
         }}
       >
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
+        <Select.Option value="86">+86</Select.Option>
+        <Select.Option value="87">+87</Select.Option>
+      </Select> */}
     </Form.Item>
   );
 
@@ -109,24 +114,33 @@ const PersonalInformation = ({ user, onFinish }) => {
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            name="phone"
+            label="Phone:"
+            className="custom_input custom_input__phone pack_custom_input"
+            rules={[
+              {
+                required: true,
+                message: "The Phone field is required",
+              },
+            ]}
+          >
+            <PhoneInput
+              initialValueFormat="national"
+              // placeholder={phone}
+              value={user.phone_number}
+              onChange={(e) => setPhoneValue(e)}
+              //   error={
+              //     value
+              //       ? isValidPhoneNumber(value)
+              //         ? undefined
+              //         : "Invalid phone number"
+              //       : "Phone number required"
+              //   }
+              countrySelectProps={{ unicodeFlags: false }}
+            />
+          </Form.Item>
         </div>
-        <Form.Item
-          name="phone"
-          label="Phone Number"
-          rules={[
-            {
-              required: true,
-              message: "Please input your phone number!",
-            },
-          ]}
-        >
-          <Input
-            addonBefore={prefixSelector}
-            style={{
-              width: "50%",
-            }}
-          />
-        </Form.Item>
       </Form>
     </div>
   );

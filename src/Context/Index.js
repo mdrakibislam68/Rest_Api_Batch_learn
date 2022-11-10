@@ -20,7 +20,6 @@ export default function GlobalProvider() {
   const baseurl = axios.create({
     baseURL: "https://api.staging.batchlearn.com/api/v1/",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });

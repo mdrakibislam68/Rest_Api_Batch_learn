@@ -11,7 +11,7 @@ import { changeModalAction } from "../../redux/classModal";
 
 const { Step } = Steps;
 
-const LoadingModal = ({ setOpenModal, selectDate }) => {
+const LoadingModal = ({ setOpenModal }) => {
   const [firstValues, setFirstValues] = useState("");
   const [secondValues, setSecondValues] = useState(null);
   const { baseurl } = GlobalProvider();

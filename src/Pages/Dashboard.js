@@ -17,7 +17,6 @@ const Dashboard = () => {
   const { baseurl } = GlobalProvider();
   const dispatch = useDispatch();
 
-  const [openModal, setOpenModal] = useState(false);
   const [classroom, setClassroom] = useState([]);
   // const [selectDate, setSelectDate] = useState("");
 
@@ -150,7 +149,6 @@ const Dashboard = () => {
         }}
         eventContent={(arg) => eventContent(arg)}
       />
-      <LoadingModal setOpenModal={setOpenModal} openModal={openModal} />
     </div>
   );
 };
