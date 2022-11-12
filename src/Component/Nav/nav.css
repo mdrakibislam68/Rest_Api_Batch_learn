@@ -3,6 +3,58 @@
   -webkit-animation: glowing 3.5s infinite;
   animation: glowing 3.5s infinite;
 }
+.ant-dropdown-menu {
+  width: 240px;
+  background: #fff;
+  position: absolute;
+  top: 7px;
+  padding: 10px 10px 5px !important;
+  border: 1px solid #e8edf3 !important;
+  border-radius: 10px !important;
+  transition: 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.ant-dropdown-menu:after {
+  position: absolute;
+  right: 25px;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  border-bottom: 1px solid #e8edf3;
+  border-right: 1px solid #e8edf3;
+  border-color: #e8edf3 transparent transparent #e8edf3;
+  border-style: solid;
+  border-width: 1px;
+  background: #fff;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  content: "";
+  transform: rotate(45deg);
+}
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  height: 40px;
+  line-height: 40px;
+  padding: 5px 10px !important;
+  border-radius: 6px;
+  transition: 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  margin: 0 0 5px !important;
+  position: relative;
+  z-index: 9;
+}
+.svg {
+  width: 32px !important;
+  height: 32px !important;
+  background: #f6f8fa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
 @keyframes glowing {
   0% {
     background-color: #156fff;

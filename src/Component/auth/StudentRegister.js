@@ -31,7 +31,7 @@ const StudentRegister = () => {
     setLoading(true);
     await axios
       .post(
-        "http://api.staging.batchlearn.com/api/v1/auth/register-student/",
+        "https://api.staging.batchlearn.com/api/v1/auth/register-student/",
         values
       )
       .then((res) => {

@@ -18,6 +18,8 @@ import Profile from "./Component/StudentProfile/Profile";
 import Billings from "./Component/StudentProfile/Billings";
 import LoadingModal from "./Component/Modal/LoadingModal";
 import ClassModal from "./Component/Modal/ClassModal";
+import ChangePassword from "./Component/StudentProfile/ChangePassword";
+import SessionHistory from "./Pages/SessionHistory";
 
 function App() {
   return (
@@ -43,6 +45,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/billings" element={<Billings />} />
+            <Route path="/session-history" element={<SessionHistory />} />
           </Route>
           <Route
             path="/signup"

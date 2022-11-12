@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { changeModalAction } from "../../redux/classModal";
 import "./nav.css";
 import LoadingModal from "../Modal/LoadingModal";
+import ChangePassword from "../StudentProfile/ChangePassword";
 const { Step } = Steps;
 
 const Nav = () => {
@@ -20,6 +21,8 @@ const Nav = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const [passModal, setPassModal] = useState(false);
+
   // const [openModal, setOpenModal] = useState(false);
 
   const handleLogout = () => {
@@ -28,14 +31,21 @@ const Nav = () => {
     navigate("/profile");
     console.log("first");
   };
+  const changePassModal = () => {
+    setPassModal(true);
+  };
+  const handlePassCancle = () => {
+    setPassModal(false);
+  };
   const menu = (
     <Menu
       items={[
         {
           label: (
             <Link to="/profile">
-              <span className="flex gap-5">
+              <span className="flex items-center gap-5 font-semibold text-base text-[#364a61]">
                 <svg
+                  className="flex items-center justify-center w-8"
                   fill="none"
                   height="18"
                   viewBox="0 0 14 18"
@@ -73,8 +83,9 @@ const Nav = () => {
         {
           label: (
             <Link to="/billings">
-              <span className="flex gap-5">
+              <span className="flex items-center gap-5 font-semibold text-base text-[#364a61]">
                 <svg
+                  className="flex items-center justify-center w-8"
                   width="20"
                   height="20"
                   viewBox="0 0 20 20"
@@ -115,13 +126,11 @@ const Nav = () => {
           key: "1",
         },
         {
-          type: "divider",
-        },
-        {
           label: (
-            <Link>
-              <span className="flex gap-5">
+            <Link onClick={changePassModal}>
+              <span className="flex items-center gap-5 font-semibold text-base text-[#364a61]">
                 <svg
+                  className="flex items-center justify-center w-8"
                   fill="none"
                   height="20"
                   viewBox="0 0 16 20"
@@ -165,8 +174,9 @@ const Nav = () => {
         {
           label: (
             <Link to="/login" onClick={handleLogout}>
-              <span className="flex gap-5">
+              <span className="flex items-center  gap-5 font-semibold text-base text-[#364a61]">
                 <svg
+                  className="flex items-center justify-center w-8"
                   fill="none"
                   height="18"
                   viewBox="0 0 18 18"
@@ -356,6 +366,9 @@ const Nav = () => {
         </span>
       </div>
       <LoadingModal setOpenModal={setOpenModal} openModal={openModal} />
+      <Modal open={passModal} onCancel={handlePassCancle} footer={null}>
+        <ChangePassword />
+      </Modal>
     </nav>
   );
 };

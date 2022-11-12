@@ -12,7 +12,7 @@ const PersonalInformation = ({ user, onFinish }) => {
 
   const [phoneValue, setPhoneValue] = useState("");
   console.log(phoneValue);
-  console.log(typeof phone);
+  console.log(phone);
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       {/* <Select
@@ -125,18 +125,9 @@ const PersonalInformation = ({ user, onFinish }) => {
               },
             ]}
           >
+            {/* <Input /> */}
             <PhoneInput
-              initialValueFormat="national"
-              // placeholder={phone}
-              value={user.phone_number}
-              onChange={(e) => setPhoneValue(e)}
-              //   error={
-              //     value
-              //       ? isValidPhoneNumber(value)
-              //         ? undefined
-              //         : "Invalid phone number"
-              //       : "Phone number required"
-              //   }
+              onChange={setPhoneValue}
               countrySelectProps={{ unicodeFlags: false }}
             />
           </Form.Item>
