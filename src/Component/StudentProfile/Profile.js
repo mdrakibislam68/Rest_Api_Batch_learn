@@ -6,6 +6,7 @@ import PersonalInformation from "./PersonalInformation";
 import { Button, Form, Modal, Upload } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { LoadingOutlined } from "@ant-design/icons";
+import subjects from "../../redux/subjects";
 
 console.clear();
 
@@ -16,7 +17,7 @@ const Profile = () => {
   const [imgData, setImgData] = useState(null);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  console.log(user);
+  const [subjects, setSubject] = useState(null);
   useEffect(() => {
     setLoading(true);
     baseurl
@@ -31,6 +32,7 @@ const Profile = () => {
       first_name: values.firstname,
       last_name: values.lastname,
       phone_number: values.phone,
+      subjects: subjects,
     };
     console.log(values);
     baseurl
@@ -42,9 +44,6 @@ const Profile = () => {
   };
   const handleChange = (e) => {
     setImage(e.fileList[0].originFileObj);
-    // console.log(e.image.file);
-    // let imgForm = new FormData();
-    // imgForm.append("file", e.image.file);
   };
 
   const submitHandler = () => {
@@ -53,9 +52,6 @@ const Profile = () => {
 
     formData.append("file", image);
 
-    const imgData = formData.get("file");
-    console.log(imgData);
-
     baseurl
       .put("auth/profile_avatar/", formData)
       .then((res) => {
@@ -63,9 +59,7 @@ const Profile = () => {
         setImgModal(false);
       })
       .catch((err) => console.log(err));
-    // console.log(formData);
   };
-  // console.log(imgData.avatar);
 
   return (
     <div className="pr-8 pt-28 pl-28 transition-all">
@@ -196,7 +190,11 @@ const Profile = () => {
       </div>
 
       <div>
-        <PersonalInformation user={user} onFinish={onFinish} />
+        <PersonalInformation
+          user={user}
+          onFinish={onFinish}
+          setSubject={setSubject}
+        />
       </div>
       <Modal
         open={imgModal}

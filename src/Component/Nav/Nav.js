@@ -23,6 +23,8 @@ const Nav = () => {
   const [openModal, setOpenModal] = useState(false);
   const [passModal, setPassModal] = useState(false);
 
+  const roll = localStorage.getItem("roll");
+
   // const [openModal, setOpenModal] = useState(false);
 
   const handleLogout = () => {
@@ -219,7 +221,7 @@ const Nav = () => {
     />
   );
   const handleCancel = () => {
-    setOpenModal(false);
+    dispatch(changeModalAction(false));
   };
   const classModal = () => {
     dispatch(changeModalAction(true));
@@ -302,36 +304,38 @@ const Nav = () => {
           </Link>
         </span>
         <span className="flex gap-5">
-          <span
-            onClick={classModal}
-            className="create-class-btn bg-[#3f8cfe] flex items-center justify-center w-[40px] h-[40px] rounded-full cursor-pointer "
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              data-v-4e75dcfc=""
+          {roll !== "Teacher" && (
+            <span
+              onClick={classModal}
+              className="create-class-btn bg-[#3f8cfe] flex items-center justify-center w-[40px] h-[40px] rounded-full cursor-pointer "
             >
-              <path
-                d="M6.00446 1V11"
-                stroke="white"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
                 data-v-4e75dcfc=""
-              ></path>{" "}
-              <path
-                d="M11.0095 6H1"
-                stroke="white"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                data-v-4e75dcfc=""
-              ></path>
-            </svg>
-          </span>
+              >
+                <path
+                  d="M6.00446 1V11"
+                  stroke="white"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  data-v-4e75dcfc=""
+                ></path>{" "}
+                <path
+                  d="M11.0095 6H1"
+                  stroke="white"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  data-v-4e75dcfc=""
+                ></path>
+              </svg>
+            </span>
+          )}
 
           <span className="flex items-center gap-5">
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -365,7 +369,7 @@ const Nav = () => {
           </span>
         </span>
       </div>
-      <LoadingModal setOpenModal={setOpenModal} openModal={openModal} />
+      <LoadingModal setOpenModal={setOpenModal} handleCancel={handleCancel} />
       <Modal open={passModal} onCancel={handlePassCancle} footer={null}>
         <ChangePassword />
       </Modal>

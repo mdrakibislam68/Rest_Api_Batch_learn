@@ -10,20 +10,19 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { studentDataSlice } from "../redux/profileInfo";
 import { changeModalAction } from "../redux/classModal";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  // const studentData = useSelector((state) => state.addSubjectFilterData.value);
-  // console.log(studentData);
   const { baseurl } = GlobalProvider();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [classroom, setClassroom] = useState([]);
-  // const [selectDate, setSelectDate] = useState("");
-
+  const roll = localStorage.getItem("roll");
   useEffect(() => {
     baseurl
       .get(
-        "/classrooms/?min_date=2022-10-29%2000:00&max_date=2022-11-05%2023:59&school=&subject="
+        "/classrooms/?min_date=2022-10-29%2000:00&max_date=2022-12-05%2023:59&school=&subject="
       )
       .then((res) => {
         setClassroom(res.data);
@@ -130,17 +129,20 @@ const Dashboard = () => {
       </div>`;
     return { html: eventIcon };
   };
+  const eventHandle = (e) => {
+    navigate("/classroom");
+  };
 
   return (
     <div className="text-black pt-24 pl-24 pr-8 overflow-x-visible">
       <FullCalendar
         dateClick={(e) => {
-          dispatch(changeModalAction(true));
-          // setOpenModal(true);
-          // setSelectDate(e.date);
+          roll !== "Teacher" && dispatch(changeModalAction(true));
         }}
         plugins={[dayGridPlugin, interactionPlugin, timeGrid]}
         events={events}
+        eventClick={eventHandle}
+        dayMaxEventRows={3}
         initialView="dayGridMonth"
         headerToolbar={{
           left: "today prev,next",

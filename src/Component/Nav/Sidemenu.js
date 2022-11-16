@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 const Sidemenu = () => {
   return (
     <div className="sidemenu w-[78px] fixed h-full top-[78px] z-10 transition-all p-5 border-gray-200 border-solid border-r">
-      <Link to="/session-history" className="flex justify-center ">
+      <Link
+        to="/session-history"
+        className="flex justify-center items-center h-[40px] w-full bg-[#ecf4ff] rounded-md"
+      >
         <svg
           data-v-44a2d60b=""
           width="20"

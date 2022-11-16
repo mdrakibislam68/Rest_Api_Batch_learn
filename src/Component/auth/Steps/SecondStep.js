@@ -3,13 +3,16 @@ import FormItem from "antd/es/form/FormItem";
 import Title from "antd/lib/skeleton/Title";
 import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { teacherSecondValue } from "../../../redux/teacherSecond";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const SecondStep = ({ current, setCurrent, setSecondValues }) => {
   const [loading, setLoading] = useState(false);
   const [subjects, setSubjects] = useState(null);
   const [serve_or_attend_school, setServe_or_attend_school] = useState([]);
+
+  const secondValue = useSelector((state) => state.second.value);
 
   const dispatch = useDispatch();
 
@@ -17,29 +20,36 @@ const SecondStep = ({ current, setCurrent, setSecondValues }) => {
     setCurrent(current - 1);
   };
   const onFinish = async () => {
-    setCurrent(current + 1);
+    setLoading(true);
     const values = {
       subjects: subjects,
       serve_or_attend_school: serve_or_attend_school,
     };
     dispatch(teacherSecondValue(values));
+    if (!subjects) {
+      alert("lsd");
+    } else if (!serve_or_attend_school) {
+      alert("school");
+    } else {
+      await axios
+        .post(
+          "https://api.staging.batchlearn.com/api/v1/auth/register-teacher-second-step/",
+          values
+        )
+        .then((res) => {
+          setCurrent(current + 1);
+          setLoading(false);
 
-    await axios
-      .post(
-        "https://api.staging.batchlearn.com/api/v1/auth/register-teacher-second-step/",
-        values
-      )
-      .then((res) => {
-        setLoading(false);
-        // toast("Your account has been successfully created!", {
-        //   position: "bottom-right",
-        //   theme: "dark",
-        //   hideProgressBar: true,
-        //   closeOnClick: true,
-        // });
-        // navigate("/login");
-      })
-      .catch((err) => console.log(err));
+          // toast("Your account has been successfully created!", {
+          //   position: "bottom-right",
+          //   theme: "dark",
+          //   hideProgressBar: true,
+          //   closeOnClick: true,
+          // });
+          // navigate("/login");
+        })
+        .catch((err) => console.log(err));
+    }
   };
   const onChangeSubjects = (checkedValues) => {
     setSubjects(checkedValues);
@@ -48,10 +58,21 @@ const SecondStep = ({ current, setCurrent, setSecondValues }) => {
   const onChangeAttend = (checkedValues) => {
     setServe_or_attend_school(checkedValues);
   };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
-    <Form onFinish={onFinish}>
+    <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
       <div className="grid grid-cols-2 gap-6 text-base font-semibold text-[#042040] font-['Nunito_Sans']">
-        <Checkbox.Group onChange={onChangeSubjects}>
+        <Checkbox.Group
+          onChange={onChangeSubjects}
+          rules={[
+            {
+              required: true,
+              message: "Please accept the terms & conditions",
+            },
+          ]}
+        >
           <Row>
             <h1 className="text-base font-semibold text-[#042040] font-['Nunito_Sans'] mb-5">
               Select up to 3 subjects you teach (honors / AP level courses):
@@ -123,7 +144,7 @@ const SecondStep = ({ current, setCurrent, setSecondValues }) => {
             type="primary"
             htmlType="submit"
           >
-            Next
+            {loading ? <LoadingOutlined /> : "Next"}
           </Button>
         )}
         {current === 2 && (

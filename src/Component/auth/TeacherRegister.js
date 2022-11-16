@@ -13,63 +13,10 @@ import { useSelector } from "react-redux";
 
 const TeacherRegister = () => {
   const [current, setCurrent] = useState(0);
-  const [loading, setLoading] = useState(false);
   // const [firstValues, setFirstValues] = useState("");
   // const [secondValues, setSecondValues] = useState(null);
-  const [classTools, setClassTools] = useState(null);
-  const [about, setAbout] = useState("");
 
-  const firstValues = useSelector((state) => state.first.value);
-  const secondValues = useSelector((state) => state.second.value);
-  console.log(firstValues);
   const { Step } = Steps;
-  const navigate = useNavigate();
-  console.log(firstValues);
-
-  const createTeacherAcc = async (values) => {
-    values = {
-      email: firstValues.email,
-      first_name: firstValues.first_name,
-      last_name: firstValues.last_name,
-      password: firstValues.password,
-      phone_number: firstValues.phone_number,
-      serve_or_attend_school: secondValues.serve_or_attend_school,
-      classTools: classTools,
-      about: about,
-    };
-    console.log("values");
-    setLoading(true);
-    axios
-      .post(
-        "https://api.staging.batchlearn.com/api/v1/auth/register-teacher/",
-        {
-          "Content-Type": "application/json",
-        },
-        values
-      )
-      .then((res) => {
-        setLoading(false);
-        toast("Your account has been successfully created!", {
-          position: "bottom-right",
-          theme: "dark",
-          hideProgressBar: true,
-          closeOnClick: true,
-        });
-        navigate("/login");
-      })
-      .catch((err) => console.log(err));
-    // await fetch(
-    //   "https://api.staging.batchlearn.com/api/v1/auth/register-teacher/",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(values),
-    //   }
-    // );
-  };
 
   return (
     <>
@@ -109,9 +56,7 @@ const TeacherRegister = () => {
                 <ThirdStep
                   current={current}
                   setCurrent={setCurrent}
-                  createTeacherAcc={createTeacherAcc}
-                  setClassTools={setClassTools}
-                  setAbout={setAbout}
+                  // createTeacherAcc={createTeacherAcc}
                 />
               )}
             </>

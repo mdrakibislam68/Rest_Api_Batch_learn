@@ -8,18 +8,23 @@ import moment from "moment";
 import GlobalProvider from "../../Context/Index";
 import { useDispatch, useSelector } from "react-redux";
 import { changeModalAction } from "../../redux/classModal";
+import axios from "axios";
 
 const { Step } = Steps;
 
-const LoadingModal = ({ setOpenModal }) => {
-  const [firstValues, setFirstValues] = useState("");
-  const [secondValues, setSecondValues] = useState(null);
+const LoadingModal = ({ setOpenModal, handleCancel }) => {
+  const tokenString = localStorage.getItem("token");
+  const token = JSON.parse(tokenString);
+  // const [firstValues, setFirstValues] = useState("");
+  // const [secondValues, setSecondValues] = useState(null);
   const { baseurl } = GlobalProvider();
   const dispatch = useDispatch();
 
+  const firstValues = useSelector((state) => state.firstClass.value);
+  const secondValues = useSelector((state) => state.secondClass.value);
+
   const [student, setStudent] = useState("");
   const openModal = useSelector((state) => state.openModal.value);
-
   useEffect(() => {
     baseurl
       .get("auth/profile_info/")
@@ -29,38 +34,44 @@ const LoadingModal = ({ setOpenModal }) => {
       });
   }, []);
 
-  const createclass = async () => {
-    let formData = new FormData();
-    const date = moment(firstValues.date).format("YYYY-MM-DD");
-    const time = moment(firstValues.time).format("LTS");
-    // const values = new FormData();
-    // formData.append("title", firstValues.title);
-    // formData.append("description", firstValues.description);
-    // formData.append("class_date", date);
-    // formData.append("creator", student);
-    // formData.append("subject", firstValues.subject);
-    // formData.append("students", [student]);
+  // const createclass = async () => {
+  //   let formData = new FormData();
+  //   const date = moment(firstValues.date).format("YYYY-MM-DD");
+  //   const time = moment(firstValues.time).format("LTS");
+  //   // const values = new FormData();
+  //   // formData.append("title", firstValues.title);
+  //   // formData.append("description", firstValues.description);
+  //   // formData.append("class_date", date);
+  //   // formData.append("creator", student);
+  //   // formData.append("subject", firstValues.subject);
+  //   // formData.append("students", [student]);
 
-    let data = {
-      title: firstValues.title,
-      description: firstValues.description,
-      class_date: date,
-      creator: student,
-      subject: firstValues.subject,
-      students: [student],
-    };
-    await baseurl
-      .post("/classrooms/class_room_create/", data)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const handleCancel = () => {
-    dispatch(changeModalAction(false));
-  };
+  //   let data = {
+  //     title: firstValues.title,
+  //     description: firstValues.description,
+  //     class_date: date,
+  //     subject: firstValues.subject,
+  //     creator: student,
+  //   };
+  //   await baseurl
+  //     .post("classrooms/class_room_create/", data)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //   // axios.post(
+  //   //   "https://api.staging.batchlearn.com/api/v1/classrooms/class_room_create/",
+  //   //   data,
+  //   //   {
+  //   //     headers: {
+  //   //       "Content-Type": "application/json",
+  //   //       Authorization: `Bearer ${token}`,
+  //   //     },
+  //   //   }
+  //   // );
+  // };
 
   const [current, setCurrent] = useState(0);
 
@@ -119,21 +130,16 @@ const LoadingModal = ({ setOpenModal }) => {
               <FirstStep
                 current={current}
                 setCurrent={setCurrent}
-                setFirstValues={setFirstValues}
+                // setFirstValues={setFirstValues}
               />
             )}
             {current === 1 && (
-              <SecondStep
-                current={current}
-                setCurrent={setCurrent}
-                setSecondValues={setSecondValues}
-              />
+              <SecondStep current={current} setCurrent={setCurrent} />
             )}
             {current === 2 && (
               <ThirdStep
                 current={current}
                 setCurrent={setCurrent}
-                createclass={createclass}
                 setOpenModal={setOpenModal}
               />
             )}

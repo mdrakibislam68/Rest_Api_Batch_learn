@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Checkbox, Form, Input, message, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  message,
+  notification,
+  Select,
+} from "antd";
 import PhoneInput from "react-phone-number-input";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -7,31 +15,54 @@ import axios from "axios";
 import GlobalProvider from "../../../Context/Index";
 import { useDispatch, useSelector } from "react-redux";
 import { teacherFirstValue } from "../../../redux/teacherFirst";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const FirstStep = ({ current, setCurrent, setFirstValues }) => {
   const [loading, setLoading] = useState(false);
-  const [phone, setPhone] = useState("");
-
-  const firstValue = useSelector((state) => state.teacherFirstValue.value);
-
+  // const [phone, setPhone] = useState("");
+  const [form] = Form.useForm();
+  const firstValue = useSelector((state) => state.first.value);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [value, setValue] = useState("");
+
+  const displayFormError = function (formRef, error) {
+    if ("response" in error && error.code !== "ERR_BAD_RESPONSE") {
+      const { data: errors } = error.response;
+
+      if ("non_field_errors" in errors) {
+      } else {
+        const fieldsErrors = [];
+        Object.entries(errors).forEach((entry) => {
+          const [key, value] = entry;
+          fieldsErrors.push({
+            name: key,
+            errors: value,
+          });
+        });
+        formRef.setFields(fieldsErrors);
+      }
+    } else {
+      notification["error"]({
+        message: "Operation unsuccessful",
+        description: error.message,
+        placement: "topRight",
+      });
+    }
+  };
   const onFinish = async (values) => {
     // console.log("Success:", values);
-    setCurrent(current + 1);
+    setLoading(true);
     const value = {
       email: values.email,
       first_name: values.first_name,
       last_name: values.last_name,
-      phone: phone,
+      phone: values.phone_number,
       phone_number: values.phone_number,
       password: values.password,
       is_accept: values.is_accept,
       teacher_type: values.teacher_type,
     };
-    console.log(values);
-    setValue(value);
+    // setFirstData(value);
     dispatch(teacherFirstValue(value));
     setLoading(true);
     await axios
@@ -40,26 +71,20 @@ const FirstStep = ({ current, setCurrent, setFirstValues }) => {
         value
       )
       .then((res) => {
+        setCurrent(current + 1);
         setLoading(false);
         console.log(res.data);
-        // toast("Your account has been successfully created!", {
-        //   position: "bottom-right",
-        //   theme: "dark",
-        //   hideProgressBar: true,
-        //   closeOnClick: true,
-        // });
-        // navigate("/login");
       })
-      .catch((err) => console.log(err.response.data));
+      .catch((error) => {
+        setLoading(false);
+        displayFormError(form, error);
+      });
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
   const prev = () => {
     setCurrent(current - 1);
-  };
-  const phoneHandle = (value) => {
-    setPhone(value);
   };
   return (
     <div>
@@ -68,28 +93,41 @@ const FirstStep = ({ current, setCurrent, setFirstValues }) => {
 
       <span>
         <Form
+          form={form}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
           name="basic"
+          autoComplete="off"
           fields={[
             {
               name: ["email"],
-              value: firstValue.email,
+              value: firstValue && firstValue.email,
             },
             {
-              name: ["firstname"],
-              value: firstValue.firstname,
+              name: ["first_name"],
+              value: firstValue && firstValue.first_name,
             },
             {
-              name: ["lastname"],
-              value: firstValue.lastname,
+              name: ["last_name"],
+              value: firstValue && firstValue.last_name,
             },
             {
-              name: ["phone"],
-              value: firstValue.phone,
+              name: ["phone_number"],
+              value: firstValue && firstValue.phone_number,
+            },
+            {
+              name: ["teacher_type"],
+              value: firstValue && firstValue.teacher_type,
+            },
+            {
+              name: ["password"],
+              value: firstValue && firstValue.password,
+            },
+            {
+              name: ["is_accept"],
+              value: firstValue && firstValue.true,
             },
           ]}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="on"
         >
           <div className="grid grid-cols-2 grid-flow-row gap-6 w-full mt-5">
             <Form.Item
@@ -246,8 +284,9 @@ const FirstStep = ({ current, setCurrent, setFirstValues }) => {
               ]}
             >
               <PhoneInput
+                disabled={!firstValue}
                 // value={this.state.phone}
-                onChange={phoneHandle}
+                // onChange={phoneHandle}
                 // onChange={(phone) => this.setPhone({ phone })}
                 placeholder="1 (712) 345-65"
                 //   value={value}
@@ -407,7 +446,7 @@ const FirstStep = ({ current, setCurrent, setFirstValues }) => {
                 type="primary"
                 htmlType="submit"
               >
-                Next
+                {loading ? <LoadingOutlined /> : "Next"}
               </Button>
             )}
             {current === 2 && (

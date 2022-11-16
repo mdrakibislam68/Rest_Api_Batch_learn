@@ -23,7 +23,7 @@
   padding: 13px;
 }
 .ant-input {
-  height: 46px;
+  height: auto;
   padding: 13px 16px;
   position: relative;
   background-color: #f9fbfc;

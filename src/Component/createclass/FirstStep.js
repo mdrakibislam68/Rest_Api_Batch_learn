@@ -9,15 +9,28 @@ import {
   TimePicker,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import { useDispatch } from "react-redux";
+import { firstStepAction } from "../../redux/classFirst";
+import moment from "moment";
 
-const FirstStep = ({ current, setCurrent, steps, setFirstValues }) => {
+const FirstStep = ({ current, setCurrent }) => {
+  const dispatch = useDispatch();
   const prev = () => {
     setCurrent(current - 1);
   };
 
   const onFinish = (values) => {
+    const date = moment(values.date).format("YYYY-MM-DD");
+    const time = moment(values.time).format("LTS");
     setCurrent(current + 1);
-    setFirstValues(values);
+    const value = {
+      title: values.title,
+      description: values.description,
+      class_date: date,
+      subject: values.subject,
+      time: time,
+    };
+    dispatch(firstStepAction(value));
   };
 
   return (

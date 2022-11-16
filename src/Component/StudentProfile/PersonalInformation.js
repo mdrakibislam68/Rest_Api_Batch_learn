@@ -1,57 +1,84 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Select } from "antd";
-import { Option } from "antd/lib/mentions";
 import "./profileInfo.css";
 import PhoneInput from "react-phone-number-input";
+import GlobalProvider from "../../Context/Index";
+import { useDispatch, useSelector } from "react-redux";
+import { subjectAction } from "../../redux/subjects";
+import { Option } from "antd/lib/mentions";
 
-const PersonalInformation = ({ user, onFinish }) => {
-  const email = user.email;
-  const firstname = user.first_name;
-  const lastname = user.last_name;
-  const phone = user.phone_number;
+const PersonalInformation = ({ onFinish, user, setSubject }) => {
+  const { baseurl } = GlobalProvider();
+  const [loading, setLoading] = useState(false);
+  // const [user, setUser] = useState("");
+  const [subjects, setSubjects] = useState(null);
+  const [classTools, setclassTools] = useState(null);
+  const roll = localStorage.getItem("roll");
 
-  const [phoneValue, setPhoneValue] = useState("");
-  console.log(phoneValue);
-  console.log(phone);
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      {/* <Select
-        value="85"
-        className="flex items-center"
-        style={{
-          width: "70px",
-        }}
-      >
-        <Select.Option value="86">+86</Select.Option>
-        <Select.Option value="87">+87</Select.Option>
-      </Select> */}
-    </Form.Item>
-  );
+  const dispatch = useDispatch();
+  const subjectsData = useSelector((state) => state.subjects.subjects);
+
+  // console.log(subjectsData);
+  useEffect(() => {
+    dispatch(subjectAction({ baseurl }));
+  }, []);
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   baseurl
+  //     .get("auth/profile_info/")
+  //     .then((res) => {
+  //       setUser(res.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+  useEffect(() => {
+    setLoading(true);
+    baseurl
+      .get("/settings/get_subjects/")
+      .then((res) => {
+        setSubjects(res.data);
+        setLoading(false);
+      })
+
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleChange = (e) => {
+    setSubject(e);
+  };
 
   return (
     <div>
       <Form
-        // initialValues={{
-        //   ["email"]: user.email,
-        // }}
         onFinish={onFinish}
         autoComplete="off"
         fields={[
           {
             name: ["email"],
-            value: email,
+            value: user.email,
           },
           {
             name: ["firstname"],
-            value: firstname,
+            value: user.first_name,
           },
           {
             name: ["lastname"],
-            value: lastname,
+            value: user.last_name,
           },
           {
             name: ["phone"],
-            value: phone,
+            value: user.phone_number,
+          },
+          {
+            name: ["subjects"],
+            value: user.subjects && user.subjects.map((item) => item.id),
+          },
+          {
+            name: ["classes_tools"],
+            value:
+              user.classes_tools && user.classes_tools.map((item) => item.name),
           },
         ]}
       >
@@ -126,11 +153,46 @@ const PersonalInformation = ({ user, onFinish }) => {
             ]}
           >
             {/* <Input /> */}
-            <PhoneInput
-              onChange={setPhoneValue}
-              countrySelectProps={{ unicodeFlags: false }}
-            />
+            <PhoneInput countrySelectProps={{ unicodeFlags: false }} />
           </Form.Item>
+          {roll === "Teacher" && (
+            <Form.Item
+              name="subjects"
+              label="Subject"
+              rules={[
+                {
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Select mode="multiple">
+                {subjectsData.map((el) => (
+                  <Select.Option value={el.id} key={el.id}>
+                    {el.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
+          {roll === "Teacher" && (
+            <Form.Item
+              name="classes_tools"
+              label="Class Tools"
+              rules={[
+                {
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Select mode="multiple">
+                {subjectsData.map((el) => (
+                  <Select.Option value={el.id} key={el.id}>
+                    {el.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
         </div>
       </Form>
     </div>

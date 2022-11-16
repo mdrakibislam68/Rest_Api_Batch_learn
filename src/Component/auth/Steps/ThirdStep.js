@@ -5,14 +5,16 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const ThirdStep = ({ current, setCurrent }) => {
-  const firstValues = useSelector((state) => state.first.value);
-  const secondValues = useSelector((state) => state.second.value);
+  const [loading, setLoading] = useState(false);
   const [classTools, setClassTools] = useState(null);
   const [about, setAbout] = useState("");
-
   const navigate = useNavigate();
+
+  const secondValues = useSelector((state) => state.second.value);
+  const firstValues = useSelector((state) => state.first.value);
   const prev = () => {
     setCurrent((prevState) => prevState - 1);
   };
@@ -22,45 +24,44 @@ const ThirdStep = ({ current, setCurrent }) => {
   const aboutHandle = (e) => {
     setAbout(e.target.value);
   };
-  const createTeacherAcc = async (values) => {
-    console.log("first");
+  const createTeacherAcc = (values) => {
     values = {
+      about: about,
+      classes_tools: classTools,
       email: firstValues.email,
       first_name: firstValues.first_name,
+      is_accept: firstValues.is_accept,
       last_name: firstValues.last_name,
       password: firstValues.password,
       phone_number: firstValues.phone_number,
-      teacher_type: firstValues.teacher_type,
-      is_accept: firstValues.is_accept,
-      subjects: secondValues.subject,
       serve_or_attend_school: secondValues.serve_or_attend_school,
-      classTools: classTools,
-      about: about,
+      subjects: secondValues.subjects,
+      teacher_type: firstValues.teacher_type,
     };
     console.log("values");
-    // setLoading(true);
+    setLoading(true);
     axios
       .post(
         "https://api.staging.batchlearn.com/api/v1/auth/register-teacher/",
-        values
-        // {
-        //   headers: {
-        //     Accept: "application/json",
-        //     "Content-Type": "application/json",
-        //   },
-        // }
+        values,
+        {
+          "Content-Type": "application/json",
+        }
       )
       .then((res) => {
-        // setLoading(false);
-        // toast("Your account has been successfully created!", {
-        //   position: "bottom-right",
-        //   theme: "dark",
-        //   hideProgressBar: true,
-        //   closeOnClick: true,
-        // });
+        toast("Your account has been successfully created!", {
+          position: "bottom-right",
+          theme: "dark",
+          hideProgressBar: true,
+          closeOnClick: true,
+        });
+        setLoading(false);
         navigate("/login");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setLoading(false);
+        console.log(err.response.data);
+      });
     // await fetch(
     //   "https://api.staging.batchlearn.com/api/v1/auth/register-teacher/",
     //   {
@@ -138,7 +139,13 @@ const ThirdStep = ({ current, setCurrent }) => {
             type="primary"
             htmlType="submit"
           >
-            Done
+            {loading ? (
+              <span>
+                <LoadingOutlined /> Please wait...
+              </span>
+            ) : (
+              <span>Done</span>
+            )}
           </Button>
         )}
       </div>

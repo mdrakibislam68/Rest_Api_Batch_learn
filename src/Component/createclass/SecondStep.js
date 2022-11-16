@@ -3,17 +3,19 @@ import { Button, Form, message, Modal, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import GlobalProvider from "../../Context/Index";
 import BillingModal from "../StudentProfile/BillingModal";
+import { useDispatch } from "react-redux";
+import { secondStepAction } from "../../redux/classSecond";
 
-const SecondStep = ({ current, setCurrent, steps, setSecondValues }) => {
+const SecondStep = ({ current, setCurrent, steps }) => {
   const { baseurl } = GlobalProvider();
   const [billingModal, setBillingModal] = useState(false);
-
+  const dispatch = useDispatch();
   const prev = () => {
     setCurrent(current - 1);
   };
   const onFinish = (values) => {
     if (values.image) {
-      setSecondValues(values.image.file);
+      dispatch(secondStepAction(values.image.file));
     }
     setCurrent(current + 1);
     setBillingModal(true);

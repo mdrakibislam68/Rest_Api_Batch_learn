@@ -1,27 +1,54 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, notification } from "antd";
 import GlobalProvider, { GlobalContext } from "../Context/Index";
 import bg from "../assest/bg.png";
 import SignupModal from "../Component/SingupModal";
+import { LoadingOutlined } from "@ant-design/icons";
+import { useForm } from "antd/lib/form/Form";
 
 console.clear();
 const LoginForm = () => {
   const { token, setToken } = GlobalProvider();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form] = Form.useForm();
 
   const navigate = useNavigate();
 
   const makeRequest = async (config) => {
     return await axios(config);
   };
+  const displayFormError = function (formRef, error) {
+    if ("response" in error && error.code !== "ERR_BAD_RESPONSE") {
+      const { data: errors } = error.response;
+
+      if ("non_field_errors" in errors) {
+      } else {
+        const fieldsErrors = [];
+        Object.entries(errors).forEach((entry) => {
+          const [key, value] = entry;
+          fieldsErrors.push({
+            name: key,
+            errors: value,
+          });
+        });
+        formRef.setFields(fieldsErrors);
+      }
+    } else {
+      notification["error"]({
+        message: "Operation unsuccessful",
+        description: error.message,
+        placement: "topRight",
+      });
+    }
+  };
 
   const onFinish = (values) => {
     const { email, password } = values;
-
+    setLoading(true);
     makeRequest({
       url: "http://api.staging.batchlearn.com/api/v1/auth/login/",
       method: "post",
@@ -32,10 +59,14 @@ const LoginForm = () => {
     })
       .then((res) => {
         setToken(res.data.access);
-        setLoading(true);
+        setLoading(false);
         navigate("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setLoading(false);
+        displayFormError(form, err);
+        console.log(err);
+      });
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -51,6 +82,7 @@ const LoginForm = () => {
             Sign In
           </h1>
           <Form
+            form={form}
             className=""
             name="basic"
             initialValues={{
@@ -161,7 +193,7 @@ const LoginForm = () => {
                       </svg>
                     </span>
                     <Input.Password
-                      className=" pl-[52px] h-[46px] leading-6 text-base rounded-xl tracking-widest"
+                      className="bg-[#f9fbfc] pl-[52px] h-[46px] leading-6 text-base rounded-xl tracking-widest"
                       placeholder="••••••"
                     />
                   </span>
@@ -174,7 +206,7 @@ const LoginForm = () => {
                 type="primary"
                 htmlType="submit"
               >
-                <span>Login</span>
+                {loading ? <LoadingOutlined /> : <span>Login</span>}
               </Button>
             </Form.Item>
             <div className="flex justify-center items-center my-5 text-base font-semibold text-gray-50">

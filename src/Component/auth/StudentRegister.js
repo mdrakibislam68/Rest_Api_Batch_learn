@@ -35,7 +35,7 @@ const StudentRegister = () => {
         values
       )
       .then((res) => {
-        setLoading(true);
+        setLoading(false);
         toast("Your account has been successfully created!", {
           position: "bottom-right",
           theme: "dark",
@@ -44,7 +44,10 @@ const StudentRegister = () => {
         });
         navigate("/login");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   // const handleClick = () => {

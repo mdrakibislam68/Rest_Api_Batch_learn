@@ -17,6 +17,13 @@ const Layout = () => {
   //     });
   // }, []);
 
+  useEffect(() => {
+    baseurl
+      .get("auth/account/")
+      .then((res) => localStorage.setItem("roll", res.data.groups[0]))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
       <Nav />
