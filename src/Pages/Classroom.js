@@ -92,6 +92,10 @@ const Classroom = () => {
           Class Details
         </span>
       </div>
+      <div className="grid grid-cols-12 gap-2">
+        <div className="bg-[#ecf4ff]] col-span-8 rounded-xl h-72 "></div>
+        <div className="col-span-4"></div>
+      </div>
     </div>
   );
 };

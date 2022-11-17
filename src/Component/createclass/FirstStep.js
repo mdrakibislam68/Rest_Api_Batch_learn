@@ -6,6 +6,7 @@ import {
   Input,
   message,
   Select,
+  Space,
   TimePicker,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
@@ -14,21 +15,27 @@ import { firstStepAction } from "../../redux/classFirst";
 import moment from "moment";
 
 const FirstStep = ({ current, setCurrent }) => {
+  const { RangePicker } = DatePicker;
+  const [date, setDate] = useState(null);
   const dispatch = useDispatch();
   const prev = () => {
     setCurrent(current - 1);
   };
-
+  const onChange = (value, dateString) => {
+    // console.log("Selected Time: ", value);
+    setDate(dateString);
+  };
+  console.log(date);
   const onFinish = (values) => {
-    const date = moment(values.date).format("YYYY-MM-DD");
-    const time = moment(values.time).format("LTS");
+    // const date = moment(values.date).format("YYYY-MM-DD");
+    // const time = moment(values.time).format("LTS");
+    // console.log(date);
     setCurrent(current + 1);
     const value = {
       title: values.title,
       description: values.description,
       class_date: date,
       subject: values.subject,
-      time: time,
     };
     dispatch(firstStepAction(value));
   };
@@ -82,17 +89,9 @@ const FirstStep = ({ current, setCurrent }) => {
       <div className="grid grid-flow-row grid-cols-2 gap-6">
         <Form.Item className="custom_datepicker" name="date" label="Class Date">
           <DatePicker
-            format={"YYYY-MM-DD"}
-            showTime={false}
+            showTime
+            onChange={onChange}
             // placeholder={date}
-          />
-        </Form.Item>
-
-        <Form.Item className="custom_datepicker" name="time" label="Start time">
-          <TimePicker
-            use12Hours
-            format="h:mm A"
-            // placeholder={time}
           />
         </Form.Item>
       </div>

@@ -1,26 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../Context/Index";
 import profileImg from "../../assest/profile.png";
-import { Dropdown, Menu, Modal, Space, Steps } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { Dropdown, Menu, Modal, Space } from "antd";
 import "../../Style/classAnimation.module.css";
-import ClassModal from "../Modal/ClassModal";
-import FirstStep from "../createclass/FirstStep";
-import SecondStep from "../createclass/SecondStep";
-import ThirdStep from "../createclass/ThirdStep";
 import { useDispatch } from "react-redux";
 import { changeModalAction } from "../../redux/classModal";
 import "./nav.css";
 import LoadingModal from "../Modal/LoadingModal";
 import ChangePassword from "../StudentProfile/ChangePassword";
-const { Step } = Steps;
 
 const Nav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [current, setCurrent] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
   const [passModal, setPassModal] = useState(false);
 
   const roll = localStorage.getItem("roll");
@@ -369,7 +360,7 @@ const Nav = () => {
           </span>
         </span>
       </div>
-      <LoadingModal setOpenModal={setOpenModal} handleCancel={handleCancel} />
+      <LoadingModal handleCancel={handleCancel} />
       <Modal open={passModal} onCancel={handlePassCancle} footer={null}>
         <ChangePassword />
       </Modal>
