@@ -1,14 +1,17 @@
+import { LoadingOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import GlobalProvider from "../../Context/Index";
 import { changeModalAction } from "../../redux/classModal";
+import { newClassAction } from "../../redux/newClass";
 
 const ThirdStep = ({ current, setCurrent }) => {
   const firstValues = useSelector((state) => state.firstClass.value);
   const secondValues = useSelector((state) => state.secondClass.value);
   const { baseurl } = GlobalProvider();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const next = () => {
     setCurrent(current + 1);
   };
@@ -16,17 +19,22 @@ const ThirdStep = ({ current, setCurrent }) => {
     setCurrent(current - 1);
   };
   const createclass = async () => {
+    setLoading(true);
     let data = {
       title: firstValues.title,
       description: firstValues.description,
       class_date: firstValues.class_date,
       subject: firstValues.subject,
     };
+
     await baseurl
+
       .post("classrooms/class_room_create/", data)
       .then((res) => {
-        console.log(res.data);
+        dispatch(newClassAction(res.data));
         dispatch(changeModalAction(false));
+        setCurrent(0);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -71,7 +79,7 @@ const ThirdStep = ({ current, setCurrent }) => {
             htmlType="submit"
             onClick={() => createclass()}
           >
-            Done
+            {loading ? <LoadingOutlined /> : <span>Done</span>}
           </Button>
         )}
       </div>

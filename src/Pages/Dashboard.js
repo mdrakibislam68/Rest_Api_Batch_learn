@@ -11,11 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { studentDataSlice } from "../redux/profileInfo";
 import { changeModalAction } from "../redux/classModal";
 import { useNavigate } from "react-router-dom";
+import { classIdAction } from "../redux/classroomId";
 
 const Dashboard = () => {
   const { baseurl } = GlobalProvider();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const newClass = useSelector((state) => state.setNewClass.value);
 
   const [classroom, setClassroom] = useState([]);
   const roll = localStorage.getItem("roll");
@@ -30,7 +32,7 @@ const Dashboard = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [newClass]);
 
   const events = classroom.map((user) => ({
     title: user.title,
@@ -130,7 +132,9 @@ const Dashboard = () => {
     return { html: eventIcon };
   };
   const eventHandle = (e) => {
-    navigate("/classroom");
+    let id = e.event._def.publicId;
+    dispatch(classIdAction(id));
+    navigate(`/classroom/${id}`);
   };
 
   return (

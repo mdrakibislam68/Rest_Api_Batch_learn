@@ -17,7 +17,6 @@
   padding-right: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 .ant-input-group > .ant-input:last-child {
   padding: 13px;

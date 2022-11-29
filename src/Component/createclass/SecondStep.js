@@ -8,20 +8,21 @@ import { secondStepAction } from "../../redux/classSecond";
 
 const SecondStep = ({ current, setCurrent, steps }) => {
   const { baseurl } = GlobalProvider();
-  const [billingModal, setBillingModal] = useState(false);
+  // const [billingModal, setBillingModal] = useState(false);
   const dispatch = useDispatch();
   const prev = () => {
     setCurrent(current - 1);
   };
   const onFinish = (values) => {
+    const imageData = new FormData();
+    imageData.append("attachments", values.image);
     if (values.image) {
-      dispatch(secondStepAction(values.image.file));
+      dispatch(secondStepAction(values.image));
     }
+    // console.log(imageData.get("file"));
     setCurrent(current + 1);
-    setBillingModal(true);
+    // setBillingModal(true);
 
-    // const imageData = new FormData();
-    // imageData.append("file", values.image.file);
     // imageData.append("classroom", values.image.file);
 
     // baseurl
@@ -72,7 +73,7 @@ const SecondStep = ({ current, setCurrent, steps }) => {
           )}
         </div>
       </Form>
-      <Modal
+      {/* <Modal
         className="custom_modal"
         title={
           <h3 className="font-[1.5rem] font-extrabold leading-[30px] mb-10">
@@ -85,8 +86,8 @@ const SecondStep = ({ current, setCurrent, steps }) => {
         cancelButtonProps={{ style: { display: "none" } }}
         okButtonProps={{ style: { display: "none" } }}
       >
-        {/* <BillingModal /> */}
-      </Modal>
+        <BillingModal />
+      </Modal> */}
     </div>
   );
 };

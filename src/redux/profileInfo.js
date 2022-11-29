@@ -10,7 +10,7 @@ export const studentDataSlice = createAsyncThunk(
   "student/data",
   async ({ baseurl }, { rejectWithValue }) => {
     try {
-      const response = await baseurl.get("auth/profile_info/");
+      const response = await baseurl.get("auth/account/");
       if (response.data) {
         // console.log(response.data);
 

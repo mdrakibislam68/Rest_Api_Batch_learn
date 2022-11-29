@@ -7,18 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { subjectAction } from "../../redux/subjects";
 import { Option } from "antd/lib/mentions";
 
-const PersonalInformation = ({ onFinish, user, setSubject }) => {
+const PersonalInformation = ({ onFinish, user }) => {
   const { baseurl } = GlobalProvider();
   const [loading, setLoading] = useState(false);
-  // const [user, setUser] = useState("");
-  const [subjects, setSubjects] = useState(null);
-  const [classTools, setclassTools] = useState(null);
   const roll = localStorage.getItem("roll");
 
   const dispatch = useDispatch();
   const subjectsData = useSelector((state) => state.subjects.subjects);
 
-  // console.log(subjectsData);
   useEffect(() => {
     dispatch(subjectAction({ baseurl }));
   }, []);
@@ -38,16 +34,11 @@ const PersonalInformation = ({ onFinish, user, setSubject }) => {
     baseurl
       .get("/settings/get_subjects/")
       .then((res) => {
-        setSubjects(res.data);
         setLoading(false);
       })
 
       .catch((err) => console.log(err));
   }, []);
-
-  const handleChange = (e) => {
-    setSubject(e);
-  };
 
   return (
     <div>

@@ -2,7 +2,6 @@ import "./App.css";
 import Layout from "../src/Component/Layout";
 
 import LoginForm from "./Pages/LoginForm";
-import Home from "../src/Pages/Home";
 import Signup from "../src/Pages/Signup";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -16,9 +15,6 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import Profile from "./Component/StudentProfile/Profile";
 import Billings from "./Component/StudentProfile/Billings";
-import LoadingModal from "./Component/Modal/LoadingModal";
-import ClassModal from "./Component/Modal/ClassModal";
-import ChangePassword from "./Component/StudentProfile/ChangePassword";
 import SessionHistory from "./Pages/SessionHistory";
 import Classroom from "./Pages/Classroom";
 
@@ -47,7 +43,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/billings" element={<Billings />} />
             <Route path="/session-history" element={<SessionHistory />} />
-            <Route path="/classroom" element={<Classroom />} />
+            <Route path="/classroom/:id" element={<Classroom />} />
           </Route>
           <Route
             path="/signup"

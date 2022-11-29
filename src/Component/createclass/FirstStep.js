@@ -10,38 +10,65 @@ import {
   TimePicker,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { firstStepAction } from "../../redux/classFirst";
 import moment from "moment";
 
 const FirstStep = ({ current, setCurrent }) => {
   const { RangePicker } = DatePicker;
-  const [date, setDate] = useState(null);
+  const [defDate, setDefDate] = useState(null);
+  const [defTime, setdefTime] = useState(null);
+  const dateFormat = "YYYY-MM-DD";
+  const firstValues = useSelector((state) => state.firstClass.value);
+
+  let dateFields = moment("13:40:56", "HH:mm:ss");
   const dispatch = useDispatch();
   const prev = () => {
     setCurrent(current - 1);
   };
-  const onChange = (value, dateString) => {
-    // console.log("Selected Time: ", value);
-    setDate(dateString);
-  };
-  console.log(date);
+  // console.log(date);
   const onFinish = (values) => {
-    // const date = moment(values.date).format("YYYY-MM-DD");
-    // const time = moment(values.time).format("LTS");
-    // console.log(date);
+    const date = moment(values.date).format("YYYY-MM-DD");
+    const time = moment(values.time).format("THH:mm:ssZ");
+    const formattedDate = date + time;
     setCurrent(current + 1);
     const value = {
       title: values.title,
       description: values.description,
-      class_date: date,
+      class_date: formattedDate,
       subject: values.subject,
+      // time: time,
     };
     dispatch(firstStepAction(value));
   };
 
   return (
-    <Form className="mt-6" onFinish={onFinish}>
+    <Form
+      className="mt-6"
+      onFinish={onFinish}
+      fields={[
+        {
+          name: ["title"],
+          value: firstValues.title,
+        },
+        {
+          name: ["description"],
+          value: firstValues.description,
+        },
+        {
+          name: ["subject"],
+          value: firstValues.subject,
+        },
+        {
+          name: ["date"],
+          value: moment("2022-11-19", "YYYY-MM-DD"),
+        },
+        {
+          name: ["time"],
+          value: moment("13:30:56", "HH:mm:ss"),
+        },
+      ]}
+    >
       <Form.Item
         label="Title"
         name="title"
@@ -87,12 +114,35 @@ const FirstStep = ({ current, setCurrent }) => {
         </Select>
       </Form.Item>
       <div className="grid grid-flow-row grid-cols-2 gap-6">
-        <Form.Item className="custom_datepicker" name="date" label="Class Date">
+        <Form.Item
+          className="custom_datepicker"
+          name="date"
+          label="Class Date"
+          rules={[
+            {
+              required: true,
+              message: "The Subject field is required",
+            },
+          ]}
+        >
           <DatePicker
-            showTime
-            onChange={onChange}
-            // placeholder={date}
+            format="YYYY-MM-DD"
+            // defaultValue={moment("2022-11-19", "YYYY-MM-DD")}
+            showTime={false}
           />
+        </Form.Item>
+        <Form.Item
+          className="custom_datepicker"
+          name="time"
+          label="Class Time"
+          rules={[
+            {
+              required: true,
+              message: "The Subject field is required",
+            },
+          ]}
+        >
+          <TimePicker use12Hours format="HH:mm A" />
         </Form.Item>
       </div>
       <div className="mt-6 flex justify-center">
