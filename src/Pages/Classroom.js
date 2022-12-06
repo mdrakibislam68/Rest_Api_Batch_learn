@@ -8,8 +8,12 @@ import Desc from "../Component/classroom/Desc";
 import { Button, Form, Input } from "antd";
 import CommentSec from "../Component/classroom/CommentSec";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewComment, loadCommentsData } from "../redux/comment";
+import comment, { addNewComment, loadCommentsData } from "../redux/comment";
 import ReplaySec from "../Component/classroom/ReplaySec";
+import ClassMember from "../Component/classroom/ClassMember";
+import StudentAttach from "../Component/classroom/StudentAttach";
+import TeacherAttach from "../Component/classroom/TeacherAttach";
+import { loadStudentAttachmentList } from "../redux/studentAttachmentList";
 
 const Classroom = ({ children }) => {
   const { baseurl } = GlobalProvider();
@@ -25,9 +29,12 @@ const Classroom = ({ children }) => {
   const URL = `classrooms/${id}/classroom-comments/?page=1&page_size=10`;
   const { studentData } = useSelector((state) => state.profile);
   const { results } = useSelector((state) => state.comment);
-
   const date = moment(classData.class_date).format("YYYY-MM-DD h:mm:ss a");
-
+  // const [studentAttach, setStudentAttach] = useState([]);
+  const url = `classrooms/${id}/student-attachment-list/?page=1&page_size=10`;
+  const { studentAttachmentList } = useSelector(
+    (state) => state.studentAttachList
+  );
   useEffect(() => {
     setcentralLoading(true);
     baseurl
@@ -56,8 +63,22 @@ const Classroom = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    // baseurl
+    //   .get(`classrooms/${id}/student-attachment-list/?page=1&page_size=10`)
+    //   .then((res) => setStudentAttach(res.data.results))
+    //   .catch((err) => console.log(err));
+    dispatch(loadStudentAttachmentList({ baseurl, url }));
+  }, []);
+
+  useEffect(() => {
     dispatch(loadCommentsData({ baseurl, URL }));
   }, []);
+  // useEffect(() => {
+  //   baseurl
+  //     .get(`classrooms/${id}/classroom-comments/?page=1&page_size=10`)
+  //     .then((res) => console.log(res))
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   const handleComment = (e) => {
     baseurl
@@ -167,7 +188,7 @@ const Classroom = ({ children }) => {
               Class Details
             </span>
           </div>
-          <div className="grid grid-cols-12 gap-6 mt-9">
+          <div className="grid grid-cols-12 gap-6 mt-9 pb-7">
             <div className="grid col-span-12 lg:col-span-8  gap-6">
               <div className="bg-[#ecf4ff] col-span-12 lg:col-span-8 rounded-xl h-72">
                 {loading ? <LoadingOutlined /> : <CountDown date={date} />}
@@ -176,181 +197,95 @@ const Classroom = ({ children }) => {
               <div className="my-10 font-['Nunito_sans'] col-span-12 lg:col-span-8 ">
                 <Desc classData={classData} />
               </div>
-              <div className="relative border border-[#f1f1f1] p-5 rounded-md  w-full relative overflow-hidden mb-6 col-span-12 lg:col-span-4">
-                <div className="text-base leading-[25px] text-black font-bold ">
-                  Classroom comments
-                </div>
-                <div className="flex flex-col justify-between min-h-[480px]">
-                  <div>
-                    {results &&
-                      results.map((comment) => (
-                        <CommentSec
-                          key={comment.id}
-                          id={id}
-                          comment={comment}
-                          show={show}
-                          setShow={setShow}
-                        >
-                          {comment.reply_comments.map((replay) => {
-                            return (
-                              <ReplaySec result={replay} key={replay.id} />
-                            );
-                          })}
-                        </CommentSec>
-                      ))}
-                    {/* {results.map((comment) =>
-                      
-                    )} */}
-                    {/* <ReplaySec key={replay.id} result={replay} /> */}
+              <div className="grid grid-cols-12 gap-5 col-span-12 lg:col-span-8">
+                <div className="border border-[#f1f1f1] p-5 rounded-md  w-full relative col-span-12 xl:col-span-7">
+                  <div className="text-base leading-[25px] text-black font-bold ">
+                    Classroom comments
                   </div>
-                  <div className="w-full">
-                    <Form
-                      form={form}
-                      className="flex items-center w-full gap-2"
-                      onFinish={handleComment}
-                    >
-                      <Form.Item name="comment" className="w-full m-0">
-                        <Input
-                          type="text"
-                          className="rounded-[40px]"
-                          placeholder="Reply to comment"
-                        />
-                      </Form.Item>
-                      <Form.Item className="m-0">
-                        <Button
-                          htmlType="submit"
-                          className="border-none p-0 w-7 h-7"
-                        >
-                          <svg
-                            id="Capa_1"
-                            enableBackground="new 0 0 404.644 404.644"
-                            height="28"
-                            viewBox="0 0 404.644 404.644"
-                            width="28"
-                            xmlns="http://www.w3.org/2000/svg"
+                  <div className="flex flex-col justify-between   my-2.5">
+                    <div className=" mt-2.5 overflow-y-scroll h-[480px] rounded-lg">
+                      {results?.length === 0 && (
+                        <p className="text-center flex items-center h-full justify-center">
+                          No comment found!
+                        </p>
+                      )}
+                      {results &&
+                        results?.map((comment) => (
+                          <div
+                            key={comment.id}
+                            className="border border-[#f1f1f1] rounded-md mt-2.5 mr-2.5 p-2.5"
                           >
-                            <g>
-                              <path
-                                d="m5.535 386.177c-3.325 15.279 8.406 21.747 19.291 16.867l367.885-188.638h.037c4.388-2.475 6.936-6.935 6.936-12.08 0-5.148-2.548-9.611-6.936-12.085h-.037l-367.885-188.641c-10.885-4.881-22.616 1.589-19.291 16.869.225 1.035 21.974 97.914 33.799 150.603l192.042 33.253-192.042 33.249c-11.825 52.686-33.575 149.567-33.799 150.603z"
-                                fill="#3F8CFE"
-                              ></path>
-                            </g>
-                          </svg>
-                        </Button>
-                      </Form.Item>
-                    </Form>
+                            <CommentSec
+                              key={comment.id}
+                              id={id}
+                              comment={comment}
+                              show={show}
+                              setShow={setShow}
+                            >
+                              {comment.reply_comments.map((replay) => {
+                                return (
+                                  <ReplaySec result={replay} key={replay.id} />
+                                );
+                              })}
+                            </CommentSec>
+                          </div>
+                        ))}
+                    </div>
+                    <div className="w-full">
+                      <Form
+                        form={form}
+                        className="flex items-center w-full gap-2 mt-2.5"
+                        onFinish={handleComment}
+                      >
+                        <Form.Item name="comment" className="w-full m-0">
+                          <Input
+                            type="text"
+                            className="rounded-[40px]"
+                            placeholder="Reply to comment"
+                          />
+                        </Form.Item>
+                        <Form.Item className="m-0">
+                          <Button
+                            htmlType="submit"
+                            className="border-none p-0 w-7 h-7"
+                          >
+                            <svg
+                              id="Capa_1"
+                              enableBackground="new 0 0 404.644 404.644"
+                              height="28"
+                              viewBox="0 0 404.644 404.644"
+                              width="28"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g>
+                                <path
+                                  d="m5.535 386.177c-3.325 15.279 8.406 21.747 19.291 16.867l367.885-188.638h.037c4.388-2.475 6.936-6.935 6.936-12.08 0-5.148-2.548-9.611-6.936-12.085h-.037l-367.885-188.641c-10.885-4.881-22.616 1.589-19.291 16.869.225 1.035 21.974 97.914 33.799 150.603l192.042 33.253-192.042 33.249c-11.825 52.686-33.575 149.567-33.799 150.603z"
+                                  fill="#3F8CFE"
+                                ></path>
+                              </g>
+                            </svg>
+                          </Button>
+                        </Form.Item>
+                      </Form>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="border border-[#f1f1f1] col-span-12 xl:col-span-4">
-                Classroom Members
+                <div className="  col-span-12 xl:col-span-5 h-full min-h-[480px]">
+                  <ClassMember />
+                </div>
               </div>
               {/* Desc. End */}
             </div>
             {/* Attachment */}
-            <div className="col-span-12 md:col-span-4 rounded-lg max-h-[430px] h-full">
-              {classData.lock === true ? (
-                <div className="flex border border-gray-200 items-center h-full justify-center flex-col">
-                  <svg
-                    data-v-61ba0d1f=""
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="54"
-                    height="54"
-                    viewBox="0 0 24 24"
-                    className="mx-auto fill-blue-15 mb-4 fill-[#ECF4FF]"
-                  >
-                    <path
-                      data-v-61ba0d1f=""
-                      d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4 17h-8v-6h8v6zm-6-6v-2c0-1.104.897-2 2-2s2 .896 2 2v2h1v-2c0-1.656-1.343-3-3-3s-3 1.344-3 3v2h1z"
-                    ></path>
-                  </svg>
-                  <span className="  text-base leading-6 text-[#042040] font-bold px-5">
-                    You don't have access to this classroom teacher attachments
-                  </span>
-                </div>
-              ) : (
-                <div className="max-h-[430px] h-full relative">
-                  {classData.teacher && (
-                    <div className="mb-7">
-                      <div className="flex items-center gap-5 mb-2.5  ">
-                        <span className="bg-[#4062FF] rounded-full w-full max-w-[3rem] h-12">
-                          <svg
-                            data-v-4b07702c=""
-                            width="28"
-                            height="48"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="mx-auto"
-                          >
-                            <path
-                              data-v-4b07702c=""
-                              d="M10.0002 0.157227C7.87916 0.157227 6.15405 1.88281 6.15405 4.00381V5.99662C6.15405 8.11777 7.87916 9.84336 10.0002 9.84336C12.1213 9.84336 13.8463 8.11777 13.8463 5.99662V4.00381C13.8463 1.88281 12.1213 0.157227 10.0002 0.157227Z"
-                              fill="#8391A9"
-                            ></path>{" "}
-                            <path
-                              data-v-4b07702c=""
-                              d="M18.4821 14.8561C17.2506 12.7573 15.282 11.2013 12.9391 10.4747C12.8848 10.4579 12.8261 10.4722 12.7856 10.5122C11.6957 11.5868 10.3415 12.4252 10.0029 12.6277C9.64149 12.3967 8.1192 11.4044 7.21421 10.5122C7.1739 10.4722 7.11469 10.4579 7.06068 10.4747C4.71749 11.2015 2.74909 12.7574 1.51797 14.8562C1.48978 14.9043 1.48978 14.9639 1.51797 15.012C3.26622 17.991 6.51629 19.8416 9.9999 19.8416C13.4837 19.8416 16.7339 17.991 18.4821 15.012C18.5105 14.9638 18.5105 14.9041 18.4821 14.8561ZM15.231 16.0034C15.231 16.0883 15.1502 16.1532 15.0655 16.1532H14.0238C13.9389 16.1532 13.8463 16.2261 13.8463 16.3111V17.3884C13.8463 17.4731 13.801 17.5378 13.7161 17.5378H12.7805C12.6957 17.5378 12.6157 17.4731 12.6157 17.3884V16.3111C12.6154 16.2262 12.5574 16.1532 12.4725 16.1532H11.386C11.3011 16.1532 11.2309 16.0881 11.2309 16.0034V15.0759C11.2309 14.991 11.3011 14.9225 11.386 14.9225H12.4725C12.5574 14.9225 12.6154 14.8532 12.6154 14.7682V13.6897C12.6154 13.6048 12.6953 13.5379 12.7802 13.5379H13.7057C13.7904 13.5379 13.8462 13.6048 13.8462 13.6897V14.7714C13.8462 14.8564 13.9284 14.9224 14.0134 14.9224H15.0655C15.1502 14.9224 15.231 14.9942 15.231 15.0791V16.0034Z"
-                              fill="#8391A9"
-                            ></path>
-                          </svg>
-                        </span>
-                        <h5 className="text-[1.125rem] text-[#042040] font-extrabold font-['Nunito_sans']">
-                          {classData.teacher.first_name}{" "}
-                          {classData.teacher.last_name}
-                        </h5>
-                      </div>
-                      <div className="text-sm px-3 py-1 inline-block text-[#8391A9] bg-blue-100 rounded-md font-semibold">
-                        {classData.teacher.subjects.map((sub) => (
-                          <span key={sub.id}> {sub.name}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="border border-gray-200 max-h-[430px] h-full relative rounded-lg">
-                    <div className="px-4 py-3 flex items-center">
-                      <span className="text-base leading-6 text-[#042040] py-3  font-bold">
-                        Teachar Attachments
-                      </span>
-                    </div>
-
-                    <ul className="text-[#7D8DA6] h-80 text-base font-semibold mb-0 overflow-x-hidden">
-                      {/* {console.log(classData.teacher)} */}
-                      {classData.teacher === null ? (
-                        <>
-                          <span className=" text-center h-full flex items-center justify-center flex-col relative">
-                            <p>No Attachment found!</p>
-                          </span>
-                          <div>
-                            <span className="flex absolute b-0 w-full  justify-center">
-                              {"No result :("}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        attachment &&
-                        attachment.map((item) => (
-                          <li
-                            className="bg-[#fbfcfe] text-base text-gray-300 py-3 px-7 hover:bg-blue-50 font-semibold"
-                            key={item.id}
-                          >
-                            <a
-                              className={"text-ellipsis text-gray-600"}
-                              href={item.file}
-                              target={"_blank"}
-                              rel="noreferrer"
-                            >
-                              {item.file &&
-                                item.file.split("_path/")[1].split("?")[0]}
-                            </a>
-                          </li>
-                        ))
-                      )}
-                    </ul>
-                  </div>
-                </div>
-              )}
+            <div className="col-span-12 lg:col-span-4 rounded-lg  h-full">
+              <TeacherAttach attachment={attachment} classData={classData} />
+              <div className="border border-gray-200 max-h-[430px] h-full relative rounded-lg">
+                <StudentAttach
+                  classData={classData}
+                  studentAttachmentList={studentAttachmentList}
+                  // setStudentAttach={setStudentAttach}
+                />
+              </div>
             </div>
           </div>
         </div>

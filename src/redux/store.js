@@ -12,6 +12,9 @@ import thirdClassRedu from "./classThird";
 import newClassRedu from "./newClass";
 import classIdRedu from "./classroomId";
 import commentReducer from "./comment";
+import dateReducer from "./clickDate";
+import eraseFormRedu from "./eraseForm";
+import studentAttachListReducer from "./studentAttachmentList";
 
 export default configureStore({
   reducer: {
@@ -29,5 +32,8 @@ export default configureStore({
     classId: classIdRedu,
     profile: studentInfoReducer,
     comment: commentReducer,
+    clickDate: dateReducer,
+    eraseForm: eraseFormRedu,
+    studentAttachList: studentAttachListReducer,
   },
 });

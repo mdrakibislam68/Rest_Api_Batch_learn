@@ -13,15 +13,12 @@ import TextArea from "antd/lib/input/TextArea";
 import { useDispatch, useSelector } from "react-redux";
 import { firstStepAction } from "../../redux/classFirst";
 import moment from "moment";
+import { useForm } from "antd/lib/form/Form";
 
 const FirstStep = ({ current, setCurrent }) => {
-  const { RangePicker } = DatePicker;
-  const [defDate, setDefDate] = useState(null);
-  const [defTime, setdefTime] = useState(null);
-  const dateFormat = "YYYY-MM-DD";
   const firstValues = useSelector((state) => state.firstClass.value);
-
-  let dateFields = moment("13:40:56", "HH:mm:ss");
+  const clickDate = useSelector((state) => state.clickDate.value);
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const prev = () => {
     setCurrent(current - 1);
@@ -40,10 +37,12 @@ const FirstStep = ({ current, setCurrent }) => {
       // time: time,
     };
     dispatch(firstStepAction(value));
+    form.resetFields();
   };
 
   return (
     <Form
+      form={form}
       className="mt-6"
       onFinish={onFinish}
       fields={[
@@ -61,7 +60,7 @@ const FirstStep = ({ current, setCurrent }) => {
         },
         {
           name: ["date"],
-          value: moment("2022-11-19", "YYYY-MM-DD"),
+          value: moment(clickDate, "YYYY-MM-DD"),
         },
         {
           name: ["time"],
@@ -145,22 +144,27 @@ const FirstStep = ({ current, setCurrent }) => {
           <TimePicker use12Hours format="HH:mm A" />
         </Form.Item>
       </div>
-      <div className="mt-6 flex justify-center">
+      <div className="mt-6 flex justify-center items-center gap-6 font-['Nunito_sans']">
         {current > 0 && (
-          <Button
-            className="bg-[#136df1] text-white border-[#40a9ff]  "
-            style={{
-              margin: "0 8px",
-            }}
-            onClick={() => prev()}
-          >
-            <span>Previous</span>
-          </Button>
+          <Form.Item className="max-w-[124px] w-full m-0">
+            <Button
+              className="bg-[#136df1] text-white border-[#40a9ff] py-4 text-base font-bold leading-5 rounded-[10px] h-auto w-full"
+              onClick={() => prev()}
+            >
+              <span>Previous</span>
+            </Button>
+          </Form.Item>
         )}
         {current === 0 && (
-          <Button type="primary" htmlType="submit">
-            Next
-          </Button>
+          <Form.Item className="max-w-[124px] w-full m-0">
+            <Button
+              className="bg-[#136df1] text-white border-[#40a9ff] py-4 text-base font-bold leading-5 rounded-[10px] h-auto w-full"
+              type="primary"
+              htmlType="submit"
+            >
+              Next
+            </Button>
+          </Form.Item>
         )}
         {current === 2 && (
           <Button

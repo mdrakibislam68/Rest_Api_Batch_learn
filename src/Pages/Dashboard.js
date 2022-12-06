@@ -3,15 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGrid from "@fullcalendar/timegrid";
-import LoadingModal from "../Component/Modal/LoadingModal";
 import GlobalProvider from "../Context/Index";
-// import listPlugin from "@fullcalendar/";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { studentDataSlice } from "../redux/profileInfo";
 import { changeModalAction } from "../redux/classModal";
 import { useNavigate } from "react-router-dom";
 import { classIdAction } from "../redux/classroomId";
+import { dateAction } from "../redux/clickDate";
 
 const Dashboard = () => {
   const { baseurl } = GlobalProvider();
@@ -24,7 +22,7 @@ const Dashboard = () => {
   useEffect(() => {
     baseurl
       .get(
-        "/classrooms/?min_date=2022-10-29%2000:00&max_date=2022-12-05%2023:59&school=&subject="
+        "/classrooms/?min_date=2022-10-29%2000:00&max_date=2022-12-30%2023:59&school=&subject="
       )
       .then((res) => {
         setClassroom(res.data);
@@ -45,7 +43,6 @@ const Dashboard = () => {
   }));
   const eventContent = (arg) => {
     const eventTitle = arg.event;
-
     const eventIcon = `<div class="flex items-center gap-2 p-1.5">
         <span>
           <svg
@@ -137,12 +134,15 @@ const Dashboard = () => {
     navigate(`/classroom/${id}`);
   };
 
+  const handleDate = (e) => {
+    const clickDate = moment(e.date).format("YYYY-MM-DD");
+    dispatch(dateAction(clickDate));
+    roll !== "Teacher" && dispatch(changeModalAction(true));
+  };
   return (
     <div className="text-black pt-24 pl-24 pr-8 overflow-x-visible">
       <FullCalendar
-        dateClick={(e) => {
-          roll !== "Teacher" && dispatch(changeModalAction(true));
-        }}
+        dateClick={(e) => handleDate(e)}
         plugins={[dayGridPlugin, interactionPlugin, timeGrid]}
         events={events}
         eventClick={eventHandle}

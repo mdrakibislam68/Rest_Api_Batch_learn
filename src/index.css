@@ -27,3 +27,16 @@ body {
   height: 36px !important;
   /* display: none !important; */
 }
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fdfdfd;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+}

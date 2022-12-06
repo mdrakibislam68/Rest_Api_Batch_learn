@@ -1,75 +1,75 @@
-import React, { useState } from "react";
-import { Button, Form, message, Modal, Upload } from "antd";
+import React from "react";
+import { Button, Form, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import GlobalProvider from "../../Context/Index";
-import BillingModal from "../StudentProfile/BillingModal";
 import { useDispatch } from "react-redux";
 import { secondStepAction } from "../../redux/classSecond";
+import "./second.css";
 
-const SecondStep = ({ current, setCurrent, steps }) => {
-  const { baseurl } = GlobalProvider();
-  // const [billingModal, setBillingModal] = useState(false);
+const SecondStep = ({ current, setCurrent, setGetImage, getImage }) => {
   const dispatch = useDispatch();
   const prev = () => {
     setCurrent(current - 1);
   };
   const onFinish = (values) => {
-    const imageData = new FormData();
-    imageData.append("attachments", values.image);
-    if (values.image) {
-      dispatch(secondStepAction(values.image));
-    }
-    // console.log(imageData.get("file"));
+    setGetImage(values.image && values.image.fileList);
     setCurrent(current + 1);
-    // setBillingModal(true);
-
-    // imageData.append("classroom", values.image.file);
-
-    // baseurl
-    //   .post("classrooms/id/student-attachment-create/", imageData)
-    //   .then((res) => {
-    //     // setImaData(res.data);
-    //     // setIsModalOpen(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    dispatch(secondStepAction(values.image.fileList));
   };
+
+  const defaultFileList = getImage?.map((el) => ({
+    uid: el.uid,
+    name: el.name,
+    status: el.status,
+  }));
   return (
     <div className="mt-9">
       <h1 className="mb-3 ">Attachment:</h1>
       <Form onFinish={onFinish}>
-        <div className="flex justify-center w-full h-20 px-4 mb-3 bg-white border-2 border-gray-200 border-dashed rounded-md cursor-pointer hover:border-gray-400 items-center">
-          <Form.Item name="image" valuePropName="name">
-            <Upload showUploadList={true} beforeUpload={() => false}>
-              <p className="upload-file flex items-center justify-center w-full">
+        <div className=" w-full h-auto px-4 mb-3 bg-white  cursor-pointer hover:border-gray-400 items-center">
+          <Form.Item name="image" className="m-0 w-full" valuePropName="image">
+            <Upload
+              beforeUpload={() => false}
+              className="w-full"
+              defaultFileList={defaultFileList}
+            >
+              {/* <p className="upload-file flex items-center justify-center w-full">
                 Drop file to attach, or
                 <span className="underline ml-1"> browse</span>
-              </p>
+              </p> */}
+              <Button
+                className="border-2 border-gray-200 border-dashed rounded-md w-full h-20 flex justify-center items-center hover:text-gray-600"
+                icon={<UploadOutlined />}
+              >
+                <span>
+                  {" "}
+                  Drop file to attach, or{" "}
+                  <span className="underline">browse</span>{" "}
+                </span>
+              </Button>
             </Upload>
           </Form.Item>
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex justify-center items-center gap-6 font-['Nunito_sans']">
           {current > 0 && (
-            <Button
-              className="bg-[#136df1] text-white border-[#40a9ff]  "
-              style={{
-                margin: "0 8px",
-              }}
-              onClick={() => prev()}
-            >
-              <span>Previous</span>
-            </Button>
+            <Form.Item className="max-w-[124px] w-full m-0">
+              <Button
+                className="bg-[#136df1] text-white border-[#40a9ff] py-4 text-base font-bold leading-5 rounded-[10px] h-auto w-full"
+                onClick={() => prev()}
+              >
+                <span>Previous</span>
+              </Button>
+            </Form.Item>
           )}
           {current === 1 && (
-            <Button type="primary" htmlType="submit">
-              Next
-            </Button>
-          )}
-          {current === 2 && (
-            <Button type="primary" htmlType="submit">
-              Done
-            </Button>
+            <Form.Item className="max-w-[124px] w-full m-0">
+              <Button
+                className="bg-[#136df1] text-white border-[#40a9ff] py-4 text-base font-bold leading-5 rounded-[10px] h-auto w-full"
+                type="primary"
+                htmlType="submit"
+              >
+                Next
+              </Button>
+            </Form.Item>
           )}
         </div>
       </Form>

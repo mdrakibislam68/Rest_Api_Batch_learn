@@ -47,11 +47,8 @@ const Profile = () => {
   };
 
   const submitHandler = () => {
-    console.log(image);
     let formData = new FormData();
-
     formData.append("file", image);
-
     baseurl
       .put("auth/profile_avatar/", formData)
       .then((res) => {

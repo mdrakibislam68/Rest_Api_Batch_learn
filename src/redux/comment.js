@@ -38,7 +38,7 @@ export const commentsSlice = createSlice({
   },
 
   extraReducers: {
-    [loadCommentsData.pending]: (state, action) => {
+    [loadCommentsData.pending]: (state) => {
       state.isLoading = true;
     },
 
@@ -50,7 +50,7 @@ export const commentsSlice = createSlice({
 
     [loadCommentsData.rejected]: (state, action) => {
       state.isLoading = false;
-      state.isError = action.payload;
+      state.isError = action.payload.response;
     },
   },
 });

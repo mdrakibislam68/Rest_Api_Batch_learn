@@ -4,14 +4,24 @@ import "../../Style/custom_modal.css";
 import FirstStep from "../createclass/FirstStep";
 import SecondStep from "../createclass/SecondStep";
 import ThirdStep from "../createclass/ThirdStep";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { changeModalAction } from "../../redux/classModal";
+import { firstStepAction } from "../../redux/classFirst";
 
 const { Step } = Steps;
 
-const LoadingModal = ({ setOpenModal, handleCancel }) => {
-  const openModal = useSelector((state) => state.openModal.value);
-
+const LoadingModal = () => {
+  const dispatch = useDispatch();
   const [current, setCurrent] = useState(0);
+  const [getImage, setGetImage] = useState(null);
+
+  const handleCancel = () => {
+    dispatch(changeModalAction(false));
+    setCurrent(0);
+    dispatch(firstStepAction(""));
+  };
+
+  const openModal = useSelector((state) => state.openModal.value);
 
   return (
     <>
@@ -27,7 +37,7 @@ const LoadingModal = ({ setOpenModal, handleCancel }) => {
         open={openModal}
         onCancel={handleCancel}
       >
-        <div className="py-6 px-9">
+        <div className="">
           <>
             <Steps current={current}>
               <Step key={current} />
@@ -39,10 +49,19 @@ const LoadingModal = ({ setOpenModal, handleCancel }) => {
               <FirstStep current={current} setCurrent={setCurrent} />
             )}
             {current === 1 && (
-              <SecondStep current={current} setCurrent={setCurrent} />
+              <SecondStep
+                current={current}
+                setCurrent={setCurrent}
+                setGetImage={setGetImage}
+                getImage={getImage}
+              />
             )}
             {current === 2 && (
-              <ThirdStep current={current} setCurrent={setCurrent} />
+              <ThirdStep
+                getImage={getImage}
+                current={current}
+                setCurrent={setCurrent}
+              />
             )}
           </>
         </div>

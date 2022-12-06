@@ -1,17 +1,17 @@
-const CLASS_SECOND_STEP = "CLASS_SECOND_STEP";
+const ERASE_FORM = "ERASE_FORM";
 
 const initialState = {
-  value: [],
+  value: "",
 };
 export const secondStepAction = (value) => {
   return {
-    type: CLASS_SECOND_STEP,
+    type: ERASE_FORM,
     payload: value,
   };
 };
-export const secondClassRedu = (state = initialState, action) => {
+export const eraseFormRedu = (state = initialState, action) => {
   switch (action.type) {
-    case CLASS_SECOND_STEP:
+    case ERASE_FORM:
       return {
         value: action.payload,
       };
@@ -20,4 +20,4 @@ export const secondClassRedu = (state = initialState, action) => {
   }
 };
 
-export default secondClassRedu;
+export default eraseFormRedu;

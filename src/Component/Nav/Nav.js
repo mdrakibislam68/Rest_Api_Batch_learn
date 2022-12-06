@@ -211,9 +211,7 @@ const Nav = () => {
       ]}
     />
   );
-  const handleCancel = () => {
-    dispatch(changeModalAction(false));
-  };
+
   const classModal = () => {
     dispatch(changeModalAction(true));
   };
@@ -360,7 +358,7 @@ const Nav = () => {
           </span>
         </span>
       </div>
-      <LoadingModal handleCancel={handleCancel} />
+      <LoadingModal />
       <Modal open={passModal} onCancel={handlePassCancle} footer={null}>
         <ChangePassword />
       </Modal>

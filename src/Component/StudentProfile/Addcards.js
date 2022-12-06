@@ -74,50 +74,52 @@ const Addcards = () => {
   return (
     !loading && (
       <div>
-        <Button
-          onClick={showModal}
-          className="flex items-center text-base font-bold text-[#3f8cfe] bg-[#ecf4ff] rounded-lg py-5 px-4 gap-1"
-        >
-          <svg
-            data-v-b906df7c=""
-            fill="none"
-            height="21"
-            viewBox="0 0 20 21"
-            width="20"
-            xmlns="http://www.w3.org/2000/svg"
+        <div className="flex justify-end ">
+          <Button
+            onClick={showModal}
+            className="flex items-center text-base font-bold text-[#3f8cfe] bg-[#ecf4ff] rounded-lg py-5 px-4 gap-1"
           >
-            {" "}
-            <g data-v-b906df7c="" mask="url(#mask0_648_9543)">
-              <path
-                data-v-b906df7c=""
-                d="M15.1427 10.4528H4.76172"
-                stroke="#3F8CFE"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.8"
-              ></path>
-              <path
-                data-v-b906df7c=""
-                d="M9.9543 15.6429V5.26196"
-                stroke="#3F8CFE"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.8"
-              ></path>
-            </g>
-          </svg>
-          <span>Add new card</span>
-        </Button>
+            <svg
+              data-v-b906df7c=""
+              fill="none"
+              height="21"
+              viewBox="0 0 20 21"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {" "}
+              <g data-v-b906df7c="" mask="url(#mask0_648_9543)">
+                <path
+                  data-v-b906df7c=""
+                  d="M15.1427 10.4528H4.76172"
+                  stroke="#3F8CFE"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.8"
+                ></path>
+                <path
+                  data-v-b906df7c=""
+                  d="M9.9543 15.6429V5.26196"
+                  stroke="#3F8CFE"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.8"
+                ></path>
+              </g>
+            </svg>
+            <span>Add new card</span>
+          </Button>
+        </div>
         <Modal
           // style={{ borderRadius: "20px" }}
           centered="true"
-          closable="true"
+          // closable="true"
           title={
             <span className="flex items-center justify-between mb-10">
               <h1 className="text-2xl font-extrabold text-[#042040] font-['Nunito_sans'] m-0">
                 Add Payment Method
               </h1>
-              <span
+              {/* <span
                 onClick={handleCancel}
                 className="w-9 h-9 bg-[#f6f8fa] rounded-full flex items-center justify-center hover:bg-blue-600 hover:stroke-white"
               >
@@ -143,7 +145,7 @@ const Addcards = () => {
                     strokeLinejoin="round"
                   ></path>
                 </svg>
-              </span>
+              </span> */}
             </span>
           }
           open={isModalOpen}
@@ -154,10 +156,10 @@ const Addcards = () => {
         </Modal>
 
         {/* cards display */}
-        <div className="grid grid-cols-3 grid-flow-row gap-5 mt-5">
+        <div className="grid grid-cols-12 grid-flow-row gap-5 mt-5">
           {cardInfo.map((card) => {
             return (
-              <div key={card.djstripe_id}>
+              <div key={card.djstripe_id} className="col-span-6">
                 <div className="card__design">
                   <div className={"p-6"}>
                     <div className={"flex justify-between"}>
@@ -283,7 +285,7 @@ const Addcards = () => {
                       **** **** **** {card.card.last4}
                     </h5>
                   </div>
-                  <div className="flex justify-between items-center py-4 px-4 rounded-xl w-full absolute bottom-0 left-0 bg-[#042040]">
+                  <div className="flex justify-between items-center py-4 px-4 rounded-b-xl w-full absolute bottom-0 left-0 bg-[#042040]">
                     <div>
                       <p className="mb-0 text-[#7D8DA6] text-sm font-semibold ">
                         Expires
