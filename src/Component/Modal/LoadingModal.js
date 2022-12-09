@@ -59,6 +59,7 @@ const LoadingModal = () => {
             {current === 2 && (
               <ThirdStep
                 getImage={getImage}
+                setGetImage={setGetImage}
                 current={current}
                 setCurrent={setCurrent}
               />

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGrid from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
 import GlobalProvider from "../Context/Index";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,35 +13,42 @@ import { classIdAction } from "../redux/classroomId";
 import { dateAction } from "../redux/clickDate";
 
 const Dashboard = () => {
+  const calendarRef = useRef();
   const { baseurl } = GlobalProvider();
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const newClass = useSelector((state) => state.setNewClass.value);
 
   const [classroom, setClassroom] = useState([]);
   const roll = localStorage.getItem("roll");
+  const [maxMinDate, setMaxMinTime] = useState(null);
+  const [allDay, setAllDay] = useState(false);
+  // console.log(maxMinDate?.view.type);
   useEffect(() => {
+    setLoading(true);
     baseurl
       .get(
-        "/classrooms/?min_date=2022-10-29%2000:00&max_date=2022-12-30%2023:59&school=&subject="
+        `/classrooms/?min_date=${moment(maxMinDate?.startStr).format(
+          "YYYY-MM-DD"
+        )}%2000:00&max_date=${moment(maxMinDate?.endStr).format(
+          "YYYY-MM-DD"
+        )}%2023:59&school=&subject=`
       )
+      // .get(
+      //   `/classrooms/?min_date=2022-12-01%2000:00&max_date=2023-01-01%2023:59&school=&subject=`
+      // )
       .then((res) => {
         setClassroom(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
-  }, [newClass]);
+  }, [newClass, maxMinDate]);
 
-  const events = classroom.map((user) => ({
-    title: user.title,
-    id: user.id,
-    start: moment(user.class_date).format("YYYY-MM-DD"),
-    color:
-      (user.status === "Pending" && "#FFBF23") ||
-      (user.status === "Accepted" && "#52C16A") ||
-      (user.status === "Ended" && "#FF6A55"),
-  }));
+  // console.log(events.start);
   const eventContent = (arg) => {
     const eventTitle = arg.event;
     const eventIcon = `<div class="flex items-center gap-2 p-1.5">
@@ -138,22 +146,65 @@ const Dashboard = () => {
     const clickDate = moment(e.date).format("YYYY-MM-DD");
     dispatch(dateAction(clickDate));
     roll !== "Teacher" && dispatch(changeModalAction(true));
+    // alert("dk");
+    // calendarRef.current
+    // .getApi()
+    // .changeView("dayGridMonth", moment(e.class_date).format("YYYY-MM-DD"));
+    // console.log(e);
+    console.log(
+      calendarRef.current.getApi().currentDataManager.state.currentViewType
+    );
+  };
+  const events = classroom.map((user) => ({
+    title: user.title,
+    id: user.id,
+    start: moment(user.class_date).format("YYYY-MM-DDTHH:mm:ssZ"),
+    allDay: allDay,
+    color:
+      (user.status === "Pending" && "#FFBF23") ||
+      (user.status === "Accepted" && "#52C16A") ||
+      (user.status === "Ended" && "#FF6A55"),
+  }));
+
+  const viewHandle = (e) => {
+    setMaxMinTime(e);
+    if (e.view.type === "dayGridMonth") {
+      setAllDay(true);
+    } else {
+      setAllDay(false);
+    }
   };
   return (
     <div className="text-black pt-24 pl-24 pr-8 overflow-x-visible">
       <FullCalendar
         dateClick={(e) => handleDate(e)}
-        plugins={[dayGridPlugin, interactionPlugin, timeGrid]}
+        plugins={[dayGridPlugin, interactionPlugin, timeGrid, listPlugin]}
         events={events}
         eventClick={eventHandle}
         dayMaxEventRows={3}
-        initialView="dayGridMonth"
+        initialView="listDay"
+        // eventColor="#000"
+        // views={{ month: { allDay: true } }}
         headerToolbar={{
           left: "today prev,next",
           center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
+          right: "dayGridMonth,timeGridWeek,timeGridDay,listDay",
+        }}
+        buttonText={{
+          today: "Today",
+          month: "Month",
+          day: "Day",
+          list: "List",
         }}
         eventContent={(arg) => eventContent(arg)}
+        // allday={true}
+        ref={calendarRef}
+        datesSet={viewHandle}
+        // datesRender={(arg) => {
+        //   console.log(arg.view.activeStart); //starting visible date
+        //   console.log(arg.view.activeEnd); //ending visible date
+        // }}
+        // startSet={handleStart}
       />
     </div>
   );

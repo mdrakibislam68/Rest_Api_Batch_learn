@@ -1,4 +1,3 @@
-import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Modal, Upload } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -11,8 +10,6 @@ const StudentAttach = ({ studentAttachmentList, classData }) => {
   const { baseurl } = GlobalProvider();
   const { id } = useParams();
   const imageData = new FormData();
-  // const [imgList, setImgList] = useState(null);
-  const [dataList, setDataList] = useState([]);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const url = `classrooms/${id}/student-attachment-create/`;
@@ -22,12 +19,7 @@ const StudentAttach = ({ studentAttachmentList, classData }) => {
   const showModal = () => {
     setModal(true);
   };
-  // const handleChange = (e) => {
-  //   setImgList(e.fileList);
-  //   console.log(e.fileList);
-  // };
   const onFinish = (e) => {
-    console.log(e.image.file);
     const imgList = e.image.fileList;
     imgList.map(async (img) => {
       imageData.append("file", img.originFileObj);
@@ -35,25 +27,12 @@ const StudentAttach = ({ studentAttachmentList, classData }) => {
       imageData.append("student", classData.creator);
       return await baseurl
         .post(url, imageData)
-        .then((res) => dispatch(addNewAttach(res.data)))
+        .then((res) => {
+          dispatch(addNewAttach(res.data));
+          console.log(res.data);
+        })
         .catch((err) => console.log(err));
     });
-
-    // imgList.map(async (el) => {
-    //   imageData.append("file", el.originFileObj);
-    //   imageData.append("classroom", id);
-    //   imageData.append("student", classData.creator);
-    //   return await baseurl
-    //     .post(url, imageData)
-    //     // .then((res) => setStudentAttach((current) => [...current, res?.data]))
-    //     .then((res) => dispatch(addNewAttach(res?.data)))
-    //     .catch((err) => console.log(err));
-    // });
-    // baseurl
-    //   .get(`classrooms/${id}/student-attachment-list/?page=1&page_size=10`)
-    //   .then((res) => setStudentAttach(res?.data.results))
-    //   .catch((err) => console.log(err));
-    console.log(studentAttachmentList);
     form.resetFields();
     setModal(false);
   };

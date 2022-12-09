@@ -1,19 +1,33 @@
 import React from "react";
 import { Button, Form, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { secondStepAction } from "../../redux/classSecond";
 import "./second.css";
+import { addNewAttach } from "../../redux/studentAttachmentList";
 
 const SecondStep = ({ current, setCurrent, setGetImage, getImage }) => {
   const dispatch = useDispatch();
+
   const prev = () => {
     setCurrent(current - 1);
   };
-  const onFinish = (values) => {
-    setGetImage(values.image && values.image.fileList);
+
+  const onFinish = (value) => {
+    setGetImage(value.image && value.image.fileList);
+    // setGetImage();
+
+    // getImage.map(async (img) => {
+    //   imageData.append("file", img.originFileObj);
+    //   imageData.append("classroom", id);
+    //   imageData.append("student", classData.creator);
+    //   return await baseurl
+    //     .post(url, imageData)
+    //     .then((res) => dispatch(addNewAttach(res.data)))
+    //     .catch((err) => console.log(err));
+    // });
     setCurrent(current + 1);
-    dispatch(secondStepAction(values.image.fileList));
+    // dispatch(secondStepAction(value.image.fileList));
   };
 
   const defaultFileList = getImage?.map((el) => ({

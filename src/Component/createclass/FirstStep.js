@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   DatePicker,
@@ -6,14 +6,12 @@ import {
   Input,
   message,
   Select,
-  Space,
   TimePicker,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useDispatch, useSelector } from "react-redux";
 import { firstStepAction } from "../../redux/classFirst";
 import moment from "moment";
-import { useForm } from "antd/lib/form/Form";
 
 const FirstStep = ({ current, setCurrent }) => {
   const firstValues = useSelector((state) => state.firstClass.value);
@@ -27,6 +25,7 @@ const FirstStep = ({ current, setCurrent }) => {
   const onFinish = (values) => {
     const date = moment(values.date).format("YYYY-MM-DD");
     const time = moment(values.time).format("THH:mm:ssZ");
+    console.log(time);
     const formattedDate = date + time;
     setCurrent(current + 1);
     const value = {
